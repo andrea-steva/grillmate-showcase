@@ -1,2 +1,225 @@
-# grillmate-showcase
+<!-- showcase:hero:start -->
+# GrillMate
+
+**Log cooks, grills & recipes.**
+
+GrillMate is a native iOS logbook for barbecue: record every cooking session, keep track of your grills and smokers, save the recipes you want to make again, see how you cook through stats and charts, and keep everything in sync across your devices with iCloud. It's built with SwiftUI for iOS 26.
+
 A personal project by Andrea Stevanato, designed, built, tested and shipped end to end. The app's source code is private: this README shows what the app does and explains how it's built.
+
+<p align="center">
+  <img src="assets/screenshots/cookings.png" alt="Cookings list" width="200">
+  <img src="assets/screenshots/recipe-detail.png" alt="Recipe detail" width="200">
+  <img src="assets/screenshots/stats.png" alt="Stats" width="200">
+  <img src="assets/screenshots/settings.png" alt="Settings" width="200">
+</p>
+<!-- showcase:hero:end -->
+
+Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
+
+<!-- showcase:glance:start -->
+## At a glance
+
+| | |
+|---|---|
+| **What** | A complete iOS app: five tabs, add/edit forms with photos, charts, theming, iCloud sync, data export and import, onboarding, English and Italian |
+| **Architecture** | Modular: one Swift package per feature plus shared core and UI packages, MVVM with repositories and dependency injection |
+| **Modern Apple stack** | Swift 6 strict concurrency, SwiftUI, Observation, Swift Charts, Core Data with CloudKit, Swift Testing |
+| **Engineering practice** | Generated Xcode project, lint in the build, unit tests per package, Conventional Commits, gitflow and a changelog |
+<!-- showcase:glance:end -->
+
+<!-- showcase:features:start -->
+## Features
+
+Every screenshot is taken from the app running on demo data.
+
+### Cookings
+Log every session and follow it from planned to completed.
+
+<p align="center">
+  <img src="assets/screenshots/cookings.png" alt="Cookings list grouped by month" width="260">
+  <img src="assets/screenshots/cooking-detail.png" alt="Cooking detail with a stretchy photo header" width="260">
+</p>
+
+- Title, barbecue, status (planned, in progress, completed), proteins and technique
+- Start and end time, target, reached and ambient temperatures, notes
+- Up to 3 photos per cook, from the camera or the photo library
+- A list grouped by month, with photo banners and swipe to complete
+
+### Devices
+All your grills, smokers, kamados and planchas in one place.
+
+<p align="center">
+  <img src="assets/screenshots/devices.png" alt="Devices list" width="260">
+</p>
+
+- Manufacturer picked from a long list of brands (or "Other"), plus model and description
+- Type, fuel, grilling area, burners, portability, purchase date and notes
+
+### Recipes
+Save the recipes you want to make again.
+
+<p align="center">
+  <img src="assets/screenshots/recipes.png" alt="Recipe cards" width="260">
+  <img src="assets/screenshots/recipe-detail.png" alt="Recipe detail with a photo gallery" width="260">
+</p>
+
+- Name, summary, technique, prep and cook time, servings and target core temperature
+- Ingredients with quantity and unit, ordered steps, notes and up to 3 photos
+- A swipeable full-width photo gallery in the detail
+
+### Stats
+See how you cook, with Swift Charts.
+
+<p align="center">
+  <img src="assets/screenshots/stats.png" alt="Stats for this year" width="260">
+  <img src="assets/screenshots/stats-ocean.png" alt="Stats with the Ocean accent color" width="260">
+</p>
+
+- This month's cooks, total, average and longest cooking time, and a chart of the proteins cooked
+- Extended stats (PRO): other periods, time per barbecue, techniques, barbecue types, cooks per month, core temperature accuracy and busiest day
+- Charts follow the accent color chosen in Settings (right: the Ocean theme)
+
+### Settings, sync and onboarding
+
+<p align="center">
+  <img src="assets/screenshots/settings.png" alt="Settings with the Data section" width="260">
+  <img src="assets/screenshots/onboarding.png" alt="Onboarding tour" width="260">
+</p>
+
+- Light, dark or system appearance, six accent colors and eight app icons (PRO)
+- iCloud sync across devices (PRO), turned on and off without restarting the app
+- Export everything, photos included, to a file, and import it back to restore your data on any iPhone
+- A first-launch onboarding tour that can be replayed
+- Privacy policy, terms of use and release notes open on the GrillMate website, in the app's language
+- Full-screen photo viewer with paging and pinch to zoom
+- English and Italian
+<!-- showcase:features:end -->
+
+<!-- showcase:stack:start -->
+## Tech stack
+
+| Area | Choice |
+|------|--------|
+| Platform | iOS 26+, Xcode 26 |
+| Language | Swift 6 with strict concurrency; main-actor default isolation and approachable concurrency in the app target |
+| UI | SwiftUI, Observation (`@Observable`), Swift Charts |
+| Persistence | Core Data, used as a Codable store, mirrored to the user's private iCloud database with CloudKit |
+| Dependency injection | [Factory](https://github.com/hmlongco/Factory), behind a thin in-house wrapper |
+| Modularization | Local Swift packages: one per feature plus two shared ones |
+| Project generation | [Tuist](https://tuist.dev) |
+| Lint | [SwiftLint](https://github.com/realm/SwiftLint), run as a pre-build phase, with custom rules |
+| Tests | Swift Testing |
+| Localization | String catalogs (`.xcstrings`), English and Italian |
+
+Factory is the only third-party runtime dependency.
+<!-- showcase:stack:end -->
+
+<!-- showcase:architecture:start -->
+## Architecture
+
+The app target is a thin shell: it owns the `TabView` and wires each tab to a feature package. Everything else lives in local Swift packages.
+
+```mermaid
+graph TD
+    App[GrillMate app target]
+    App --> Cookings[CookingsFeature]
+    App --> Barbecue[BarbecueFeature]
+    App --> Recipes[RecipesFeature]
+    App --> Stats[StatsFeature]
+    App --> Settings[SettingsFeature]
+    App --> Onboarding[OnboardingFeature]
+    App --> Profile[ProfileFeature]
+
+    Cookings & Barbecue & Recipes & Stats & Settings & Onboarding & Profile --> CoreUI["GrillMateCoreUI<br/>design system, components, Router, ViewState"]
+    Cookings & Barbecue & Recipes & Stats & Settings & Onboarding & Profile --> Core["GrillMateCore<br/>domain, repositories, Core Data, DI"]
+    Core --> Factory[Factory]
+```
+
+- **Features never depend on each other.** Each one depends only on `GrillMateCore` and `GrillMateCoreUI`, so it builds, tests and previews on its own.
+- **`GrillMateCoreUI` doesn't depend on `GrillMateCore`.** Shared components take plain, already formatted values, and each feature maps its domain models to them.
+- **One public entry point per feature**: a `@MainActor` factory enum that returns the feature's navigation stack. Screens, view models and routes stay internal to the package.
+
+### Data flow
+
+```mermaid
+flowchart LR
+    View --> ViewModel
+    ViewModel --> Protocol[Repository protocol]
+    Protocol --> Repository
+    Repository --> DataSource[Local data source]
+    DataSource --> CoreData[(Core Data)]
+```
+
+View models are `@Observable` main-actor classes that expose a `ViewState<T>` (idle, loading, loaded, error) and resolve their repositories from the DI container. Only the repository protocols are public: data sources and the Core Data stack are internal to `GrillMateCore` and do their work on background contexts.
+<!-- showcase:architecture:end -->
+
+<!-- showcase:highlights:start -->
+## Technical highlights
+
+### Navigation as data
+Each feature owns a generic, observable `Router<Route>` bound to `NavigationStack(path:)`, with an enum of routes. Screens never touch the router: they receive closures such as `onAddTapped` or `onCookingTapped`, so they stay reusable and easy to preview.
+
+### Core Data as a Codable blob store
+Every persisted entity has the same three attributes: an id, a JSON-encoded payload of the domain model and an update date. Domain models stay plain `Codable` Swift structs, and adding a persisted type takes one entity plus a small data source on top of generic fetch and upsert helpers. Models that change shape keep decoding their legacy payloads, with tests that decode the old JSON. The schema follows CloudKit's rules (no uniqueness constraints, every attribute optional), enforced by a test.
+
+### iCloud sync that switches live
+A single shared Core Data stack can reload its store with or without `NSPersistentCloudKitContainer` on the same file, so turning sync on or off applies immediately. Without uniqueness constraints, reads keep only the newest copy of an id, deletes run in a context so they're mirrored, and remote changes, coalesced to one per second, tell the open lists to reload.
+
+### A portable export format
+Export writes one versioned JSON file with every item and photo. Import decodes and validates the whole file before touching the store, rejects files from newer app versions, and replaces the data only after a confirmation that shows what the file contains.
+
+### Photos out of the hot path
+Cooking and recipe photos live in their own entities, indexed by owner, rather than inside the parent payload, so list fetches never decode image data. Photos are downsampled with ImageIO before being stored and are deleted together with their owner.
+
+### Design tokens and a themable accent
+Colors, fonts and SF Symbols are read through `Design` tokens; features never hard-code a symbol name. The accent color is an environment value set once at the root, so changing the theme recolors controls, cards and Swift Charts palettes in one place.
+
+### Shared UI, different data
+Cards, form fields, photo galleries and the stretchy photo header live in `GrillMateCoreUI`. The onboarding, the lists and the stats render the same components: the onboarding feeds them sample strings, the lists feed them domain data.
+
+### Free and PRO behind one protocol
+PRO status and the free-tier limits are read from a single entitlement repository, and the limits are configured in one place. Features ask `isPro()` and never know where the answer comes from.
+
+### Demo data schemes
+Two extra schemes launch the app on an in-memory store filled with realistic data (barbecues, recipes and a year of cookings dated relative to today), one as a free user and one as PRO. They're used for screenshots, demos and manual testing, never touch the real store, and are compiled only in Debug.
+
+### Localized per package
+Each package ships its own string catalog in English and Italian. A custom SwiftLint rule fails the build when a view in a package uses a bare string literal, which would be looked up in the app's catalog and never translated.
+<!-- showcase:highlights:end -->
+
+<!-- showcase:quality:start -->
+## Quality
+
+- **Tests**: more than 80 Swift Testing tests across the core, UI and feature packages, including an export and import round trip, a check that the Core Data model stays CloudKit-compatible and decoding tests for legacy payloads.
+- **Lint**: SwiftLint runs before every build, with rules such as no force unwrapping, implicit returns and closure length limits, plus custom project rules.
+- **Generated project**: the Xcode project and workspace are generated from a single Tuist manifest.
+- **Process**: Conventional Commits, gitflow with pull requests into `develop`, and a changelog following Keep a Changelog.
+<!-- showcase:quality:end -->
+
+<!-- showcase:whats-new:start -->
+## What's new
+
+*In development, ahead of the 1.0 release:*
+
+- iCloud sync across your devices (PRO)
+- Export all your data to a file and import it back
+- Six accent colors and eight app icons, including a Pride icon
+- Italian localization across the whole app
+- A recipe photo gallery, and photo thumbnails in the recipe cards
+- Cooking cards with a photo banner, grouped by month, with swipe to complete
+- A full-screen photo viewer with paging and pinch to zoom
+- A "What's new" link in Settings, with the privacy policy and terms on the new GrillMate website
+- Correct plurals for recipe units ("2 cups", "4 tablespoons")
+<!-- showcase:whats-new:end -->
+
+<!-- showcase:next:start -->
+## What's next
+
+- PRO version with in-app purchase
+- Paywall
+- AI-assisted cooking features
+- Engagement notifications
+- Crash reporting and analytics
+- Automated App Store releases with fastlane
+<!-- showcase:next:end -->
