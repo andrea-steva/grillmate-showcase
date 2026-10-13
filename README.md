@@ -12,7 +12,9 @@
 
 GrillMate is a **native iOS logbook for barbecue**: record every cooking session, keep track of your grills and smokers, save the recipes you want to make again, see how you cook through **stats and charts**, and keep everything in sync across your devices with **iCloud**. It's built with **SwiftUI for iOS 26**.
 
-A personal project by **Andrea Stevanato**, designed, built, tested and shipped end to end. The app's source code is private: this README shows what the app does and explains how it's built.
+The goal is to **use every iOS feature Apple offers** where it fits a barbecue logbook: SwiftUI and Swift Charts, Core Data with CloudKit, Home Screen quick actions and alternate app icons today, and Widgets, Live Activities, the Dynamic Island, Control Center controls and AlarmKit next.
+
+A personal project by **Andrea Stevanato**, designed, built and tested end to end. The app's source code is private: this README shows what the app does and explains how it's built.
 
 <p align="center">
   <img src="assets/screenshots/cookings.png" alt="Cookings list" width="200">
@@ -35,7 +37,6 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 - [🧱 Architecture](#-architecture)
 - [💡 Technical highlights](#-technical-highlights)
 - [✅ Quality](#-quality)
-- [🆕 What's new](#-whats-new)
 - [🔭 What's next](#-whats-next)
 <!-- showcase:toc:end -->
 
@@ -241,21 +242,6 @@ Each package ships its **own string catalog** in English and Italian. A **custom
 - **Generated project**: the Xcode project and workspace are generated from a single **Tuist** manifest.
 - **Process**: **Conventional Commits**, **gitflow** with pull requests into `develop`, and a changelog following Keep a Changelog.
 <!-- showcase:quality:end -->
-
-<!-- showcase:whats-new:start -->
-## 🆕 What's new
-
-*In development, ahead of the 1.0 release:*
-
-- **Home Screen quick actions**, with your cook in progress one tap away
-- **iCloud sync** across your devices (PRO)
-- **Export** all your data to a file and **import** it back
-- **Six accent colors** and **ten app icons**, including Pride, Italy and USA icons
-- **Italian** localization across the whole app
-- A recipe **photo gallery**, and photo thumbnails in the recipe cards
-- Cooking cards with a photo banner, grouped by month, with swipe to complete
-- A "What's new" link in Settings, with the privacy policy and terms on the new GrillMate website
-<!-- showcase:whats-new:end -->
 
 <!-- showcase:next:start -->
 ## 🔭 What's next
