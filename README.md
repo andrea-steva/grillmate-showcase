@@ -7,9 +7,14 @@
 
 **Log cooks, grills & recipes.**
 
+> [!IMPORTANT]
+> 🚧 **Work in progress.** GrillMate is in active development and **will be available on the App Store soon**.
+
 GrillMate is a **native iOS logbook for barbecue**: record every cooking session, keep track of your grills and smokers, save the recipes you want to make again, see how you cook through **stats and charts**, and keep everything in sync across your devices with **iCloud**. It's built with **SwiftUI for iOS 26**.
 
-A personal project by **Andrea Stevanato**, designed, built, tested and shipped end to end. The app's source code is private: this README shows what the app does and explains how it's built.
+The goal is to **use every iOS feature Apple offers** where it fits a barbecue logbook: SwiftUI and Swift Charts, Core Data with CloudKit, Home Screen quick actions and alternate app icons today, and Widgets, Live Activities, the Dynamic Island, Control Center controls and AlarmKit next.
+
+A personal project by **Andrea Stevanato**, designed, built and tested end to end. The app's source code is private: this README shows what the app does and explains how it's built.
 
 <p align="center">
   <img src="assets/screenshots/cookings.png" alt="Cookings list" width="200">
@@ -32,7 +37,6 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 - [🧱 Architecture](#-architecture)
 - [💡 Technical highlights](#-technical-highlights)
 - [✅ Quality](#-quality)
-- [🆕 What's new](#-whats-new)
 - [🔭 What's next](#-whats-next)
 <!-- showcase:toc:end -->
 
@@ -116,7 +120,7 @@ Your logbook on every device.
 - Barbecues, cookings, recipes and **photos** sync across your iPhones through your **private iCloud database** (PRO)
 - One toggle in Settings turns sync **on or off immediately**, without restarting the app
 - Open lists **refresh by themselves** when changes arrive from another device
-- **Export** everything, photos included, to a single file, and **import** it back to restore your data on any iPhone
+- **Export** everything, photos included, to a single file, after a confirmation that shows how many items it will contain, and **import** it back to restore your data on any iPhone
 
 ### 🔧 Settings and onboarding
 
@@ -125,7 +129,7 @@ Your logbook on every device.
   <img src="assets/screenshots/onboarding.png" alt="Onboarding tour" width="260">
 </p>
 
-- Light, dark or system appearance, **six accent colors** and **eight app icons** (PRO)
+- Light, dark or system appearance, **six accent colors** and **ten app icons**, including Pride, Italy and USA (PRO)
 - A first-launch **onboarding tour** that can be replayed
 - Privacy policy, terms of use and release notes open on the GrillMate website, in the app's language
 - Full-screen **photo viewer** with paging and pinch to zoom
@@ -214,6 +218,9 @@ Cooking and recipe photos live in **their own entities, indexed by owner**, rath
 ### 🎨 Design tokens and a themable accent
 Colors, fonts and SF Symbols are read through `Design` **tokens**; features never hard-code a symbol name. The accent color is an **environment value** set once at the root, so changing the theme recolors controls, cards and Swift Charts palettes in one place.
 
+### 📱 Alternate app icons
+Ten home screen icons are **generated from the master artwork**, so each variant keeps the exact flame and grill. The picker shows small previews bundled with the Settings feature, because an app icon set can't be loaded as an image, and the icon change goes through a **small protocol over the system API**, so the logic is unit-tested without UIKit. Alternate icons are PRO: free users see them locked, but **the icon in use is never locked**, so nobody loses the icon they already set.
+
 ### 🧩 Shared UI, different data
 Cards, form fields, photo galleries and the stretchy photo header live in `GrillMateCoreUI`. The onboarding, the lists and the stats render **the same components**: the onboarding feeds them sample strings, the lists feed them domain data.
 
@@ -235,21 +242,6 @@ Each package ships its **own string catalog** in English and Italian. A **custom
 - **Generated project**: the Xcode project and workspace are generated from a single **Tuist** manifest.
 - **Process**: **Conventional Commits**, **gitflow** with pull requests into `develop`, and a changelog following Keep a Changelog.
 <!-- showcase:quality:end -->
-
-<!-- showcase:whats-new:start -->
-## 🆕 What's new
-
-*In development, ahead of the 1.0 release:*
-
-- **Home Screen quick actions**, with your cook in progress one tap away
-- **iCloud sync** across your devices (PRO)
-- **Export** all your data to a file and **import** it back
-- **Six accent colors** and **eight app icons**, including a Pride icon
-- **Italian** localization across the whole app
-- A recipe **photo gallery**, and photo thumbnails in the recipe cards
-- Cooking cards with a photo banner, grouped by month, with swipe to complete
-- A "What's new" link in Settings, with the privacy policy and terms on the new GrillMate website
-<!-- showcase:whats-new:end -->
 
 <!-- showcase:next:start -->
 ## 🔭 What's next
