@@ -48,7 +48,7 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 | **What** | A complete iOS app: five tabs, add/edit forms with photos, charts, theming, **iCloud sync**, data export and import, **Home Screen quick actions**, onboarding, English and Italian |
 | **Architecture** | **Modular**: one Swift package per feature plus shared core and UI packages, **MVVM** with repositories and **dependency injection** |
 | **Modern Apple stack** | **Swift 6** strict concurrency, **SwiftUI**, Observation, **Swift Charts**, **Core Data with CloudKit**, **Swift Testing** |
-| **Engineering practice** | Generated Xcode project, lint in the build, unit tests per package, Conventional Commits, gitflow and a changelog |
+| **Engineering practice** | Generated Xcode project, lint in the build, unit tests per package, **fastlane** TestFlight uploads, Conventional Commits, gitflow and a changelog |
 <!-- showcase:glance:end -->
 
 <!-- showcase:features:start -->
@@ -120,6 +120,7 @@ Your logbook on every device.
 - Barbecues, cookings, recipes and **photos** sync across your iPhones through your **private iCloud database** (PRO)
 - One toggle in Settings turns sync **on or off immediately**, without restarting the app
 - Open lists **refresh by themselves** when changes arrive from another device
+- **Reinstall and your data comes back**: the sync choice is remembered in iCloud, so a fresh install turns sync back on by itself and restores everything
 - **Export** everything, photos included, to a single file, after a confirmation that shows how many items it will contain, and **import** it back to restore your data on any iPhone
 
 ### 🔧 Settings and onboarding
@@ -150,6 +151,7 @@ Your logbook on every device.
 | Project generation | [Tuist](https://tuist.dev) |
 | Lint | [SwiftLint](https://github.com/realm/SwiftLint), run as a pre-build phase, with custom rules |
 | Tests | **Swift Testing** |
+| Release automation | [fastlane](https://fastlane.tools): tests, TestFlight uploads and the App Store listing |
 | Localization | String catalogs (`.xcstrings`), English and Italian |
 
 Factory is the only third-party runtime dependency.
@@ -204,10 +206,10 @@ Each feature owns a generic, observable `Router<Route>` bound to `NavigationStac
 Every quick action is a **deep link** on a custom URL scheme, parsed into a typed `DeepLink` in `GrillMateCore`. The root view picks the tab, and each feature's navigation stack turns the link into its own routes, so a quick action, and any future widget or notification, opens the right screen **without features knowing about each other**. The shortcut items are rebuilt from the current data whenever the app goes to the background.
 
 ### 💾 Core Data as a Codable blob store
-Every persisted entity has the same three attributes: an id, a **JSON-encoded payload** of the domain model and an update date. Domain models stay plain `Codable` Swift structs, and adding a persisted type takes one entity plus a small data source on top of generic fetch and upsert helpers. Models that change shape keep **decoding their legacy payloads**, with tests that decode the old JSON. The schema follows **CloudKit's rules** (no uniqueness constraints, every attribute optional), enforced by a test.
+Every persisted entity has the same three attributes: an id, a **JSON-encoded payload** of the domain model and an update date. Domain models stay plain `Codable` Swift structs, and adding a persisted type takes one entity plus a small data source on top of generic fetch and upsert helpers. Models that change shape keep **decoding their legacy payloads**, with tests that decode the old JSON. The schema follows **CloudKit's rules** (no uniqueness constraints, every attribute optional), enforced by a test, and another test **pins the model deployed to production CloudKit**, so a model change can't ship without deploying the schema first.
 
 ### 🔄 iCloud sync that switches live
-A single shared Core Data stack can **reload its store** with or without `NSPersistentCloudKitContainer` on the same file, so turning sync on or off applies immediately. Without uniqueness constraints, reads keep only the newest copy of an id, deletes run in a context so they're mirrored, and remote changes, **coalesced to one per second**, tell the open lists to reload.
+A single shared Core Data stack can **reload its store** with or without `NSPersistentCloudKitContainer` on the same file, so turning sync on or off applies immediately. Without uniqueness constraints, reads keep only the newest copy of an id, deletes run in a context so they're mirrored, and remote changes, **coalesced to one per second**, tell the open lists to reload. The sync choice is also saved in **iCloud key-value storage**, which survives deleting the app, so a fresh install silently turns sync back on and the data flows back in.
 
 ### 📦 A portable export format
 Export writes one **versioned JSON file** with every item and photo. Import decodes and **validates the whole file** before touching the store, rejects files from newer app versions, and replaces the data only after a confirmation that shows what the file contains.
@@ -237,16 +239,17 @@ Each package ships its **own string catalog** in English and Italian. A **custom
 <!-- showcase:quality:start -->
 ## ✅ Quality
 
-- **Tests**: about **90 Swift Testing tests** across the app, core, UI and feature packages, including quick-action building, an export and import round trip, a check that the Core Data model stays CloudKit-compatible and decoding tests for legacy payloads.
+- **Tests**: about **100 Swift Testing tests** across the app, core, UI and feature packages, including quick-action building, an export and import round trip, restoring iCloud sync after a reinstall, a check that the Core Data model stays CloudKit-compatible, a pin of the production CloudKit schema and decoding tests for legacy payloads.
 - **Lint**: **SwiftLint runs before every build**, with rules such as no force unwrapping, implicit returns and closure length limits, plus custom project rules.
 - **Generated project**: the Xcode project and workspace are generated from a single **Tuist** manifest.
+- **Releases**: **fastlane** lanes run the tests, archive and upload builds to **TestFlight**, and push the App Store listing after checking every field against Apple's limits. The app ships a **privacy manifest**: no tracking, no data collected.
 - **Process**: **Conventional Commits**, **gitflow** with pull requests into `develop`, and a changelog following Keep a Changelog.
 <!-- showcase:quality:end -->
 
 <!-- showcase:next:start -->
 ## 🔭 What's next
 
-- PRO version with in-app purchase and a paywall
+- PRO version with in-app purchase
 - Widgets
 - Live Activity and Dynamic Island for the cook in progress
 - Control Center controls
@@ -254,5 +257,5 @@ Each package ships its **own string catalog** in English and Italian. A **custom
 - AI-assisted cooking features
 - Engagement notifications
 - Crash reporting and analytics
-- Automated App Store releases with fastlane
+- Automated App Store screenshots and CI releases
 <!-- showcase:next:end -->
