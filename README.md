@@ -12,7 +12,7 @@
 
 GrillMate is a **native iOS logbook for barbecue**: record every cooking session, keep track of your grills and smokers, save the recipes you want to make again, see how you cook through **stats and charts**, and keep everything in sync across your devices with **iCloud**. It's built with **SwiftUI for iOS 26**.
 
-The goal is to **use every iOS feature Apple offers** where it fits a barbecue logbook: SwiftUI and Swift Charts, Core Data with CloudKit, Home Screen quick actions and alternate app icons today, and Widgets, Live Activities, the Dynamic Island, Control Center controls and AlarmKit next.
+The goal is to **use every iOS feature Apple offers** where it fits a barbecue logbook: SwiftUI and Swift Charts, Core Data with CloudKit, **WidgetKit** Home Screen and Lock Screen widgets, Home Screen quick actions and alternate app icons today, and Live Activities, the Dynamic Island, Control Center controls and AlarmKit next.
 
 A personal project by **Andrea Stevanato**, designed, built and tested end to end. The app's source code is private: this README shows what the app does and explains how it's built.
 
@@ -32,7 +32,7 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 - [👀 At a glance](#-at-a-glance)
 - [✨ Features](#-features)
   - [🍖 Cookings](#-cookings) · [🔥 Devices](#-devices) · [📖 Recipes](#-recipes) · [📊 Stats](#-stats)
-  - [⚡ Quick actions](#-quick-actions) · [🔄 iCloud sync](#-icloud-sync) · [🔧 Settings and onboarding](#-settings-and-onboarding)
+  - [🔲 Widgets](#-widgets) · [⚡ Quick actions](#-quick-actions) · [📲 iPhone Duo](#-iphone-duo) · [🔄 iCloud sync](#-icloud-sync) · [🔧 Settings and onboarding](#-settings-and-onboarding)
 - [🧰 Tech stack](#-tech-stack)
 - [🧱 Architecture](#-architecture)
 - [💡 Technical highlights](#-technical-highlights)
@@ -45,9 +45,9 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 
 | | |
 |---|---|
-| **What** | A complete iOS app: five tabs, add/edit forms with photos, charts, theming, **iCloud sync**, data export and import, **Home Screen quick actions**, onboarding, English and Italian |
+| **What** | A complete iOS app: five tabs, add/edit forms with photos, charts, theming, **iCloud sync**, data export and import, **Home Screen and Lock Screen widgets**, **Home Screen quick actions**, **iPhone Duo** support, onboarding, English and Italian |
 | **Architecture** | **Modular**: one Swift package per feature plus shared core and UI packages, **MVVM** with repositories and **dependency injection** |
-| **Modern Apple stack** | **Swift 6** strict concurrency, **SwiftUI**, Observation, **Swift Charts**, **Core Data with CloudKit**, **Swift Testing** |
+| **Modern Apple stack** | **Swift 6** strict concurrency, **SwiftUI**, Observation, **Swift Charts**, **WidgetKit**, **Core Data with CloudKit**, **Swift Testing** |
 | **Engineering practice** | Generated Xcode project, lint in the build, unit tests per package, **fastlane** TestFlight uploads, Conventional Commits, gitflow and a changelog |
 <!-- showcase:glance:end -->
 
@@ -103,6 +103,18 @@ See how you cook, with **Swift Charts**.
 - **Extended stats (PRO)**: other periods, time per barbecue, techniques, barbecue types, cooks per month, core temperature accuracy and busiest day
 - Charts follow the **accent color** chosen in Settings (right: the Ocean theme)
 
+### 🔲 Widgets
+Your cook at a glance, on the **Home Screen** and the **Lock Screen** (free).
+
+<p align="center">
+  <img src="assets/screenshots/widget-now-cooking.png" alt="Now cooking widget with a live elapsed timer" width="200">
+  <img src="assets/screenshots/widget-grill-stats.png" alt="Grill stats widget with this month's cookings and grill time" width="200">
+</p>
+
+- **Now cooking** (small, and rectangular on the Lock Screen): the cook in progress with a **live elapsed timer** and its target temperature, otherwise the next planned cook, otherwise a "Fire it up" shortcut
+- **Grill stats** (small, and circular on the Lock Screen): this month's **cookings and grill time**
+- Both use the app's **accent color**, **open the right screen** when tapped, support the tinted and clear Home Screen styles, and come in English and Italian
+
 ### ⚡ Quick actions
 Long-press the app icon to jump straight into the app.
 
@@ -113,6 +125,18 @@ Long-press the app icon to jump straight into the app.
 - **New cooking**, **New recipe**, **Stats** and **Add device**, one tap from the Home Screen
 - The **cooking in progress**, or the next planned one, comes first and opens directly, so you can update a cook while it's on the grill
 - The menu is **dynamic**: it's refreshed every time you leave the app, so it always shows your current cook, in English or Italian
+
+### 📲 iPhone Duo
+GrillMate runs on **both displays** of the foldable iPhone Duo.
+
+<p align="center">
+  <img src="assets/screenshots/duo-outer.png" alt="Cookings on the iPhone Duo outer display, with the tabs in the vertical bar" height="380">
+  <img src="assets/screenshots/duo-inner.png" alt="Recipe detail on the unfolded iPhone Duo inner display" height="380">
+</p>
+
+- On the **outer display**, the tabs move to the **vertical system bar** beside the content
+- **Unfold** the phone and the screen you're on carries over to the large **inner display**, in landscape
+- The App Store listing has captioned screenshots for both displays, in English and Italian
 
 ### 🔄 iCloud sync
 Your logbook on every device.
@@ -160,7 +184,7 @@ Factory is the only third-party runtime dependency.
 <!-- showcase:architecture:start -->
 ## 🧱 Architecture
 
-The app target is a **thin shell**: it owns the `TabView`, the scene delegate for quick actions and the deep-link routing, and wires each tab to a feature package. Everything else lives in local Swift packages.
+The app target is a **thin shell**: it owns the `TabView`, the scene delegate for quick actions and the deep-link routing, and wires each tab to a feature package. A **widget extension** reads only the shared core and UI packages. Everything else lives in local Swift packages.
 
 ```mermaid
 graph TD
@@ -171,10 +195,11 @@ graph TD
     App --> Stats[StatsFeature]
     App --> Settings[SettingsFeature]
     App --> Onboarding[OnboardingFeature]
-    App --> Profile[ProfileFeature]
+    Widgets[GrillMateWidgets extension]
 
-    Cookings & Barbecue & Recipes & Stats & Settings & Onboarding & Profile --> CoreUI["GrillMateCoreUI<br/>design system, components, Router, ViewState"]
-    Cookings & Barbecue & Recipes & Stats & Settings & Onboarding & Profile --> Core["GrillMateCore<br/>domain, repositories, Core Data, DI"]
+    Cookings & Barbecue & Recipes & Stats & Settings & Onboarding --> CoreUI["GrillMateCoreUI<br/>design system, components, Router, ViewState"]
+    Cookings & Barbecue & Recipes & Stats & Settings & Onboarding --> Core["GrillMateCore<br/>domain, repositories, Core Data, DI"]
+    Widgets --> CoreUI & Core
     Core --> Factory[Factory]
 ```
 
@@ -203,7 +228,10 @@ View models are `@Observable` main-actor classes that expose a `ViewState<T>` (i
 Each feature owns a generic, observable `Router<Route>` bound to `NavigationStack(path:)`, with an enum of routes. Screens never touch the router: they receive closures such as `onAddTapped` or `onCookingTapped`, so they stay **reusable and easy to preview**.
 
 ### ⚡ Quick actions as deep links
-Every quick action is a **deep link** on a custom URL scheme, parsed into a typed `DeepLink` in `GrillMateCore`. The root view picks the tab, and each feature's navigation stack turns the link into its own routes, so a quick action, and any future widget or notification, opens the right screen **without features knowing about each other**. The shortcut items are rebuilt from the current data whenever the app goes to the background.
+Every quick action is a **deep link** on a custom URL scheme, parsed into a typed `DeepLink` in `GrillMateCore`. The root view picks the tab, and each feature's navigation stack turns the link into its own routes, so a quick action, a widget and any future notification opens the right screen **without features knowing about each other**. The shortcut items are rebuilt from the current data whenever the app goes to the background.
+
+### 🔲 Widgets that never open the store
+The widget extension **never touches Core Data or CloudKit**: opening the store from a second process would race with the app and with iCloud mirroring. Instead the app writes a small JSON **snapshot** of what the widgets show into a shared **App Group** container, at launch, when it goes to the background, when data changes and when the theme changes, and reloads the timelines **only when the snapshot changed**, since iOS budgets reloads. The timer is drawn by the system, and a second timeline entry resets the monthly stats when a new month starts.
 
 ### 💾 Core Data as a Codable blob store
 Every persisted entity has the same three attributes: an id, a **JSON-encoded payload** of the domain model and an update date. Domain models stay plain `Codable` Swift structs, and adding a persisted type takes one entity plus a small data source on top of generic fetch and upsert helpers. Models that change shape keep **decoding their legacy payloads**, with tests that decode the old JSON. The schema follows **CloudKit's rules** (no uniqueness constraints, every attribute optional), enforced by a test, and another test **pins the model deployed to production CloudKit**, so a model change can't ship without deploying the schema first.
@@ -229,8 +257,8 @@ Cards, form fields, photo galleries and the stretchy photo header live in `Grill
 ### 💎 Free and PRO behind one protocol
 PRO status and the free-tier limits are read from a **single entitlement repository**, and the limits are configured in one place. Features ask `isPro()` and never know where the answer comes from.
 
-### 🧪 Demo data schemes
-Two extra schemes launch the app on an **in-memory store** filled with realistic data (barbecues, recipes and a year of cookings dated relative to today), one as a free user and one as PRO. They're used for screenshots, demos and manual testing, **never touch the real store**, and are compiled only in Debug.
+### 🧪 Demo data and a dev app
+A separate **development app variant** installs next to the release one, so testing never touches the real install. Two extra schemes launch the app on an **in-memory store** filled with realistic data (barbecues, recipes and a year of cookings dated relative to today), one as a free user and one as PRO. They're used for screenshots, demos and manual testing, **never touch the real store**, and are compiled only in Debug.
 
 ### 🌍 Localized per package
 Each package ships its **own string catalog** in English and Italian. A **custom SwiftLint rule** fails the build when a view in a package uses a bare string literal, which would be looked up in the app's catalog and never translated.
@@ -239,7 +267,7 @@ Each package ships its **own string catalog** in English and Italian. A **custom
 <!-- showcase:quality:start -->
 ## ✅ Quality
 
-- **Tests**: about **100 Swift Testing tests** across the app, core, UI and feature packages, including quick-action building, an export and import round trip, restoring iCloud sync after a reinstall, a check that the Core Data model stays CloudKit-compatible, a pin of the production CloudKit schema and decoding tests for legacy payloads.
+- **Tests**: more than **100 Swift Testing tests** across the app, core, UI and feature packages, including quick-action building, the widget snapshot, an export and import round trip, restoring iCloud sync after a reinstall, a check that the Core Data model stays CloudKit-compatible, a pin of the production CloudKit schema and decoding tests for legacy payloads.
 - **Lint**: **SwiftLint runs before every build**, with rules such as no force unwrapping, implicit returns and closure length limits, plus custom project rules.
 - **Generated project**: the Xcode project and workspace are generated from a single **Tuist** manifest.
 - **Releases**: **fastlane** lanes run the tests, archive and upload builds to **TestFlight**, and push the App Store listing after checking every field against Apple's limits. The app ships a **privacy manifest**: no tracking, no data collected.
@@ -250,7 +278,7 @@ Each package ships its **own string catalog** in English and Italian. A **custom
 ## 🔭 What's next
 
 - PRO version with in-app purchase
-- Widgets
+- PRO widgets
 - Live Activity and Dynamic Island for the cook in progress
 - Control Center controls
 - Cook alarms
