@@ -111,9 +111,9 @@ Your cook at a glance, on the **Home Screen** and the **Lock Screen** (free).
   <img src="assets/screenshots/widget-grill-stats.png" alt="Grill stats widget with this month's cookings and grill time" width="200">
 </p>
 
-- **Now cooking** (small and Lock Screen): the cook in progress with a **live elapsed timer** and its target temperature, otherwise the next planned cook, otherwise a "Fire it up" shortcut
-- **Grill stats** (small and Lock Screen): this month's **cookings and grill time**
-- A tap **opens the right screen** in the app; the widgets follow the **accent color**, the tinted and clear Home Screen styles, and come in English and Italian
+- **Now cooking** (small, and rectangular on the Lock Screen): the cook in progress with a **live elapsed timer** and its target temperature, otherwise the next planned cook, otherwise a "Fire it up" shortcut
+- **Grill stats** (small, and circular on the Lock Screen): this month's **cookings and grill time**
+- Both use the app's **accent color**, **open the right screen** when tapped, support the tinted and clear Home Screen styles, and come in English and Italian
 
 ### ⚡ Quick actions
 Long-press the app icon to jump straight into the app.
