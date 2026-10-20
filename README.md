@@ -32,7 +32,7 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 - [👀 At a glance](#-at-a-glance)
 - [✨ Features](#-features)
   - [🍖 Cookings](#-cookings) · [🔥 Devices](#-devices) · [📖 Recipes](#-recipes) · [📊 Stats](#-stats)
-  - [⚡ Quick actions](#-quick-actions) · [🔄 iCloud sync](#-icloud-sync) · [🔧 Settings and onboarding](#-settings-and-onboarding)
+  - [⚡ Quick actions](#-quick-actions) · [📲 iPhone Duo](#-iphone-duo) · [🔄 iCloud sync](#-icloud-sync) · [🔧 Settings and onboarding](#-settings-and-onboarding)
 - [🧰 Tech stack](#-tech-stack)
 - [🧱 Architecture](#-architecture)
 - [💡 Technical highlights](#-technical-highlights)
@@ -45,7 +45,7 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 
 | | |
 |---|---|
-| **What** | A complete iOS app: five tabs, add/edit forms with photos, charts, theming, **iCloud sync**, data export and import, **Home Screen quick actions**, onboarding, English and Italian |
+| **What** | A complete iOS app: five tabs, add/edit forms with photos, charts, theming, **iCloud sync**, data export and import, **Home Screen quick actions**, **iPhone Duo** support, onboarding, English and Italian |
 | **Architecture** | **Modular**: one Swift package per feature plus shared core and UI packages, **MVVM** with repositories and **dependency injection** |
 | **Modern Apple stack** | **Swift 6** strict concurrency, **SwiftUI**, Observation, **Swift Charts**, **Core Data with CloudKit**, **Swift Testing** |
 | **Engineering practice** | Generated Xcode project, lint in the build, unit tests per package, **fastlane** TestFlight uploads, Conventional Commits, gitflow and a changelog |
@@ -113,6 +113,18 @@ Long-press the app icon to jump straight into the app.
 - **New cooking**, **New recipe**, **Stats** and **Add device**, one tap from the Home Screen
 - The **cooking in progress**, or the next planned one, comes first and opens directly, so you can update a cook while it's on the grill
 - The menu is **dynamic**: it's refreshed every time you leave the app, so it always shows your current cook, in English or Italian
+
+### 📲 iPhone Duo
+GrillMate runs on **both displays** of the foldable iPhone Duo.
+
+<p align="center">
+  <img src="assets/screenshots/duo-outer.png" alt="Cookings on the iPhone Duo outer display, with the tabs in the vertical bar" height="380">
+  <img src="assets/screenshots/duo-inner.png" alt="Recipe detail on the unfolded iPhone Duo inner display" height="380">
+</p>
+
+- On the **outer display**, the tabs move to the **vertical system bar** beside the content
+- **Unfold** the phone and the screen you're on carries over to the large **inner display**, in landscape
+- The App Store listing has captioned screenshots for both displays, in English and Italian
 
 ### 🔄 iCloud sync
 Your logbook on every device.
