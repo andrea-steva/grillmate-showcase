@@ -48,7 +48,7 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 | **What** | A complete iOS app: five tabs, add/edit forms with photos, charts, theming, **iCloud sync**, data export and import, **Home Screen and Lock Screen widgets**, **Home Screen quick actions**, **iPhone Duo** support, onboarding, English and Italian |
 | **Architecture** | **Modular**: one Swift package per feature plus shared core and UI packages, **MVVM** with repositories and **dependency injection** |
 | **Modern Apple stack** | **Swift 6** strict concurrency, **SwiftUI**, Observation, **Swift Charts**, **WidgetKit**, **Core Data with CloudKit**, **Swift Testing** |
-| **Engineering practice** | Generated Xcode project, lint in the build, unit tests per package, **fastlane** TestFlight uploads, Conventional Commits, gitflow and a changelog |
+| **Engineering practice** | Generated Xcode project, lint in the build, unit tests per package, **Maestro UI tests**, **fastlane** TestFlight uploads, Conventional Commits, gitflow and a changelog |
 <!-- showcase:glance:end -->
 
 <!-- showcase:features:start -->
@@ -174,7 +174,7 @@ Your logbook on every device.
 | Modularization | Local **Swift packages**: one per feature plus two shared ones |
 | Project generation | [Tuist](https://tuist.dev) |
 | Lint | [SwiftLint](https://github.com/realm/SwiftLint), run as a pre-build phase, with custom rules |
-| Tests | **Swift Testing** |
+| Tests | **Swift Testing** for unit tests, [Maestro](https://maestro.dev) for UI integration tests |
 | Release automation | [fastlane](https://fastlane.tools): tests, TestFlight uploads and the App Store listing |
 | Localization | String catalogs (`.xcstrings`), English and Italian |
 
@@ -258,7 +258,7 @@ Cards, form fields, photo galleries and the stretchy photo header live in `Grill
 PRO status and the free-tier limits are read from a **single entitlement repository**, and the limits are configured in one place. Features ask `isPro()` and never know where the answer comes from.
 
 ### 🧪 Demo data and a dev app
-A separate **development app variant** installs next to the release one, so testing never touches the real install. Two extra schemes launch the app on an **in-memory store** filled with realistic data (barbecues, recipes and a year of cookings dated relative to today), one as a free user and one as PRO. They're used for screenshots, demos and manual testing, **never touch the real store**, and are compiled only in Debug.
+A separate **development app variant** installs next to the release one, so testing never touches the real install. Two extra schemes launch the app on an **in-memory store** filled with realistic data (barbecues, recipes and a year of cookings dated relative to today), one as a free user and one as PRO. They're used for screenshots, demos, **UI tests** and manual testing, **never touch the real store**, and are compiled only in Debug.
 
 ### 🌍 Localized per package
 Each package ships its **own string catalog** in English and Italian. A **custom SwiftLint rule** fails the build when a view in a package uses a bare string literal, which would be looked up in the app's catalog and never translated.
@@ -268,10 +268,37 @@ Each package ships its **own string catalog** in English and Italian. A **custom
 ## ✅ Quality
 
 - **Tests**: more than **100 Swift Testing tests** across the app, core, UI and feature packages, including quick-action building, the widget snapshot, an export and import round trip, restoring iCloud sync after a reinstall, a check that the Core Data model stays CloudKit-compatible, a pin of the production CloudKit schema and decoding tests for legacy payloads.
+- **UI tests**: black-box **Maestro** flows drive the real app on a simulator, starting from a clean install on the demo data, so every run is deterministic. They select views by **accessibility identifier**, defined in one place in the shared UI package, never by text, so they pass in English and Italian. One script builds the app, installs it and runs the flows with a JUnit report. See [UI tests with Maestro](#-ui-tests-with-maestro).
 - **Lint**: **SwiftLint runs before every build**, with rules such as no force unwrapping, implicit returns and closure length limits, plus custom project rules.
 - **Generated project**: the Xcode project and workspace are generated from a single **Tuist** manifest.
 - **Releases**: **fastlane** lanes run the tests, archive and upload builds to **TestFlight**, and push the App Store listing after checking every field against Apple's limits. The app ships a **privacy manifest**: no tracking, no data collected.
 - **Process**: **Conventional Commits**, **gitflow** with pull requests into `develop`, and a changelog following Keep a Changelog.
+
+### 🎬 UI tests with Maestro
+The first suite covers the **onboarding**: finishing it page by page, skipping it, swiping between pages, and checking that it isn't shown again on the next launch. Below, the "finish" flow runs on the iPhone 17 simulator: the steps on the left, the app on the right.
+
+<p align="center">
+  <img src="assets/screenshots/onboarding-ui-test.gif" alt="Maestro running the onboarding flow: each step turns green as the app moves through the five onboarding pages and lands on the Cookings tab" width="720">
+</p>
+
+An excerpt of that flow:
+
+```yaml
+# Goes through every page with "Continue" and finishes on "Get started".
+- runFlow: ../../subflows/launch_fresh.yaml   # clean install on the demo data
+- tapOn:
+    id: onboarding.primary                     # "Continue"
+- assertVisible:
+    id: onboarding.page.cookings
+# … devices, recipes, stats
+- assertVisible:
+    id: onboarding.skip
+    enabled: false                             # "Skip" can't be tapped on the last page
+- tapOn:
+    id: onboarding.primary                     # "Get started"
+- assertVisible:
+    id: cookings.add                           # landed on the Cookings tab
+```
 <!-- showcase:quality:end -->
 
 <!-- showcase:next:start -->
