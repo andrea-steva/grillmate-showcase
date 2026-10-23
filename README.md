@@ -10,7 +10,7 @@
 > [!IMPORTANT]
 > 🚧 **Work in progress.** GrillMate is in active development and **will be available on the App Store soon**.
 
-GrillMate is a **native iOS logbook for barbecue**: record every cooking session, keep track of your grills and smokers, save the recipes you want to make again, see how you cook through **stats and charts**, and keep everything in sync across your devices with **iCloud**. It's built with **SwiftUI for iOS 26**.
+GrillMate is a **native iOS logbook for barbecue**: record every cooking session, keep track of your grills and smokers, save the recipes you want to make again, see how you cook through **stats and charts**, and keep everything in sync across your devices with **iCloud**. It's built with **SwiftUI for iOS 26**, in **light and dark mode**.
 
 The goal is to **use every iOS feature Apple offers** where it fits a barbecue logbook: SwiftUI and Swift Charts, Core Data with CloudKit, **WidgetKit** Home Screen and Lock Screen widgets, Home Screen quick actions and alternate app icons today, and Live Activities, the Dynamic Island, Control Center controls and AlarmKit next.
 
@@ -54,14 +54,16 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 <!-- showcase:features:start -->
 ## ✨ Features
 
-Every screenshot is taken from the app running on demo data.
+Every screenshot is taken from the app running on demo data, in **light and dark mode** side by side.
 
 ### 🍖 Cookings
 Log every session and follow it from **planned** to **completed**.
 
 <p align="center">
-  <img src="assets/screenshots/cookings.png" alt="Cookings list grouped by month" width="260">
-  <img src="assets/screenshots/cooking-detail.png" alt="Cooking detail with a stretchy photo header" width="260">
+  <img src="assets/screenshots/cookings.png" alt="Cookings list grouped by month (light)" width="200">
+  <img src="assets/screenshots/cookings-dark.png" alt="Cookings list grouped by month (dark)" width="200">
+  <img src="assets/screenshots/cooking-detail.png" alt="Cooking detail with a stretchy photo header (light)" width="200">
+  <img src="assets/screenshots/cooking-detail-dark.png" alt="Cooking detail with a stretchy photo header (dark)" width="200">
 </p>
 
 - Title, barbecue, **status** (planned, in progress, completed), proteins and technique
@@ -73,7 +75,8 @@ Log every session and follow it from **planned** to **completed**.
 All your grills, smokers, kamados and planchas in one place.
 
 <p align="center">
-  <img src="assets/screenshots/devices.png" alt="Devices list" width="260">
+  <img src="assets/screenshots/devices.png" alt="Devices list (light)" width="260">
+  <img src="assets/screenshots/devices-dark.png" alt="Devices list (dark)" width="260">
 </p>
 
 - **Manufacturer** picked from a long list of brands (or "Other"), plus model and description
@@ -83,8 +86,10 @@ All your grills, smokers, kamados and planchas in one place.
 Save the recipes you want to make again.
 
 <p align="center">
-  <img src="assets/screenshots/recipes.png" alt="Recipe cards" width="260">
-  <img src="assets/screenshots/recipe-detail.png" alt="Recipe detail with a photo gallery" width="260">
+  <img src="assets/screenshots/recipes.png" alt="Recipe cards (light)" width="200">
+  <img src="assets/screenshots/recipes-dark.png" alt="Recipe cards (dark)" width="200">
+  <img src="assets/screenshots/recipe-detail.png" alt="Recipe detail with a photo gallery (light)" width="200">
+  <img src="assets/screenshots/recipe-detail-dark.png" alt="Recipe detail with a photo gallery (dark)" width="200">
 </p>
 
 - Name, summary, technique, **prep and cook time**, servings and **target core temperature**
@@ -95,20 +100,24 @@ Save the recipes you want to make again.
 See how you cook, with **Swift Charts**.
 
 <p align="center">
-  <img src="assets/screenshots/stats.png" alt="Stats for this year" width="260">
-  <img src="assets/screenshots/stats-ocean.png" alt="Stats with the Ocean accent color" width="260">
+  <img src="assets/screenshots/stats.png" alt="Stats for this year (light)" width="200">
+  <img src="assets/screenshots/stats-dark.png" alt="Stats for this year (dark)" width="200">
+  <img src="assets/screenshots/stats-ocean.png" alt="Stats with the Ocean accent color (light)" width="200">
+  <img src="assets/screenshots/stats-ocean-dark.png" alt="Stats with the Ocean accent color (dark)" width="200">
 </p>
 
 - This month's cooks, **total, average and longest cooking time**, and a chart of the proteins cooked
 - **Extended stats (PRO)**: other periods, time per barbecue, techniques, barbecue types, cooks per month, core temperature accuracy and busiest day
-- Charts follow the **accent color** chosen in Settings (right: the Ocean theme)
+- Charts follow the **accent color** chosen in Settings (last two: the Ocean theme)
 
 ### 🔲 Widgets
 Your cook at a glance, on the **Home Screen** and the **Lock Screen** (free).
 
 <p align="center">
-  <img src="assets/screenshots/widget-now-cooking.png" alt="Now cooking widget with a live elapsed timer" width="200">
-  <img src="assets/screenshots/widget-grill-stats.png" alt="Grill stats widget with this month's cookings and grill time" width="200">
+  <img src="assets/screenshots/widget-now-cooking.png" alt="Now cooking widget with a live elapsed timer (light)" width="180">
+  <img src="assets/screenshots/widget-now-cooking-dark.png" alt="Now cooking widget with a live elapsed timer (dark)" width="180">
+  <img src="assets/screenshots/widget-grill-stats.png" alt="Grill stats widget with this month's cookings and grill time (light)" width="180">
+  <img src="assets/screenshots/widget-grill-stats-dark.png" alt="Grill stats widget with this month's cookings and grill time (dark)" width="180">
 </p>
 
 - **Now cooking** (small, and rectangular on the Lock Screen): the cook in progress with a **live elapsed timer** and its target temperature, otherwise the next planned cook, otherwise a "Fire it up" shortcut
@@ -119,7 +128,8 @@ Your cook at a glance, on the **Home Screen** and the **Lock Screen** (free).
 Long-press the app icon to jump straight into the app.
 
 <p align="center">
-  <img src="assets/screenshots/quick-actions.png" alt="Home Screen quick actions menu" width="260">
+  <img src="assets/screenshots/quick-actions.png" alt="Home Screen quick actions menu (light)" width="260">
+  <img src="assets/screenshots/quick-actions-dark.png" alt="Home Screen quick actions menu (dark)" width="260">
 </p>
 
 - **New cooking**, **New recipe**, **Stats** and **Add device**, one tap from the Home Screen
@@ -130,8 +140,12 @@ Long-press the app icon to jump straight into the app.
 GrillMate runs on **both displays** of the foldable iPhone Duo.
 
 <p align="center">
-  <img src="assets/screenshots/duo-outer.png" alt="Cookings on the iPhone Duo outer display, with the tabs in the vertical bar" height="380">
-  <img src="assets/screenshots/duo-inner.png" alt="Recipe detail on the unfolded iPhone Duo inner display" height="380">
+  <img src="assets/screenshots/duo-outer.png" alt="Cookings on the iPhone Duo outer display, with the tabs in the vertical bar (light)" height="380">
+  <img src="assets/screenshots/duo-outer-dark.png" alt="Cookings on the iPhone Duo outer display, with the tabs in the vertical bar (dark)" height="380">
+</p>
+<p align="center">
+  <img src="assets/screenshots/duo-inner.png" alt="Recipe detail on the unfolded iPhone Duo inner display (light)" width="420">
+  <img src="assets/screenshots/duo-inner-dark.png" alt="Recipe detail on the unfolded iPhone Duo inner display (dark)" width="420">
 </p>
 
 - On the **outer display**, the tabs move to the **vertical system bar** beside the content
@@ -150,11 +164,13 @@ Your logbook on every device.
 ### 🔧 Settings and onboarding
 
 <p align="center">
-  <img src="assets/screenshots/settings.png" alt="Settings with the Data section" width="260">
-  <img src="assets/screenshots/onboarding.png" alt="Onboarding tour" width="260">
+  <img src="assets/screenshots/settings.png" alt="Settings with the Data section (light)" width="200">
+  <img src="assets/screenshots/settings-dark.png" alt="Settings with the Data section (dark)" width="200">
+  <img src="assets/screenshots/onboarding.png" alt="Onboarding tour (light)" width="200">
+  <img src="assets/screenshots/onboarding-dark.png" alt="Onboarding tour (dark)" width="200">
 </p>
 
-- Light, dark or system appearance, **six accent colors** and **ten app icons**, including Pride, Italy and USA (PRO)
+- **Light, dark or system appearance**, **six accent colors** and **ten app icons**, including Pride, Italy and USA (PRO)
 - A first-launch **onboarding tour** that can be replayed
 - Privacy policy, terms of use and release notes open on the GrillMate website, in the app's language
 - Full-screen **photo viewer** with paging and pinch to zoom
