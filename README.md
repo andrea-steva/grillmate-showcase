@@ -7,8 +7,11 @@
 
 **Log cooks, grills & recipes.**
 
-> [!IMPORTANT]
-> 🚧 **Work in progress.** GrillMate is in active development and **will be available on the App Store soon**.
+<p align="center">
+  <a href="https://apps.apple.com/app/id6823652919">
+    <img src="assets/img/app-store-badge.svg" alt="Download on the App Store" height="56">
+  </a>
+</p>
 
 GrillMate is a **native iOS logbook for barbecue**: record every cooking session, keep track of your grills and smokers, save the recipes you want to make again, see how you cook through **stats and charts**, and keep everything in sync across your devices with **iCloud**. It's built with **SwiftUI for iOS 26**, in **light and dark mode**.
 
