@@ -51,7 +51,7 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 | **What** | A complete iOS app: five tabs, add/edit forms with photos, charts, theming, **iCloud sync**, data export and import, **Home Screen and Lock Screen widgets**, **Home Screen quick actions**, **iPhone Duo** support, onboarding, English and Italian |
 | **Architecture** | **Modular**: one Swift package per feature plus shared core and UI packages, **MVVM** with repositories and **dependency injection** |
 | **Modern Apple stack** | **Swift 6** strict concurrency, **SwiftUI**, Observation, **Swift Charts**, **WidgetKit**, **Core Data with CloudKit**, **Swift Testing** |
-| **Engineering practice** | Generated Xcode project, lint in the build, unit tests per package, **Maestro UI tests**, **fastlane** TestFlight uploads, Conventional Commits, gitflow and a changelog |
+| **Engineering practice** | Generated Xcode project, lint in the build, unit tests per package, **Maestro UI tests**, **Xcode Cloud** tests on every push, **fastlane** TestFlight uploads, Conventional Commits, gitflow and a changelog |
 <!-- showcase:glance:end -->
 
 <!-- showcase:features:start -->
@@ -194,6 +194,7 @@ Your logbook on every device.
 | Project generation | [Tuist](https://tuist.dev) |
 | Lint | [SwiftLint](https://github.com/realm/SwiftLint), run as a pre-build phase, with custom rules |
 | Tests | **Swift Testing** for unit tests, [Maestro](https://maestro.dev) for UI integration tests |
+| Continuous integration | [Xcode Cloud](https://developer.apple.com/xcode-cloud/): every push to `develop` runs the unit tests of all packages |
 | Release automation | [fastlane](https://fastlane.tools): tests, TestFlight uploads and the App Store listing |
 | Localization | String catalogs (`.xcstrings`), English and Italian |
 
@@ -290,6 +291,7 @@ Each package ships its **own string catalog** in English and Italian. A **custom
 - **UI tests**: black-box **Maestro** flows drive the real app on a simulator, starting from a clean install on the demo data, so every run is deterministic. They select views by **accessibility identifier**, defined in one place in the shared UI package, never by text, so they pass in English and Italian. One script builds the app, installs it and runs the flows with a JUnit report. See [UI tests with Maestro](#-ui-tests-with-maestro).
 - **Lint**: **SwiftLint runs before every build**, with rules such as no force unwrapping, implicit returns and closure length limits, plus custom project rules.
 - **Generated project**: the Xcode project and workspace are generated from a single **Tuist** manifest.
+- **Continuous integration**: **Xcode Cloud** builds and tests every push to `develop` with one test plan that covers the unit tests of the app, the shared packages and every feature, so a merged pull request is checked without a local run.
 - **Releases**: **fastlane** lanes run the tests, archive and upload builds to **TestFlight**, and push the App Store listing after checking every field against Apple's limits. The app ships a **privacy manifest**: no tracking, no data collected.
 - **Process**: **Conventional Commits**, **gitflow** with pull requests into `develop`, and a changelog following Keep a Changelog.
 
