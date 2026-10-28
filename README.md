@@ -33,11 +33,11 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 ## 📑 Contents
 
 - [👀 At a glance](#-at-a-glance)
+- [🧰 Tech stack](#-tech-stack)
+- [🧱 Architecture](#-architecture)
 - [✨ Features](#-features)
   - [🍖 Cookings](#-cookings) · [🔥 Devices](#-devices) · [📖 Recipes](#-recipes) · [📊 Stats](#-stats)
   - [🔲 Widgets](#-widgets) · [⚡ Quick actions](#-quick-actions) · [📲 iPhone Duo](#-iphone-duo) · [🔄 iCloud sync](#-icloud-sync) · [🔧 Settings and onboarding](#-settings-and-onboarding)
-- [🧰 Tech stack](#-tech-stack)
-- [🧱 Architecture](#-architecture)
 - [💡 Technical highlights](#-technical-highlights)
 - [✅ Quality](#-quality)
 - [🔭 What's next](#-whats-next)
@@ -53,6 +53,67 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 | **Modern Apple stack** | **Swift 6** strict concurrency, **SwiftUI**, Observation, **Swift Charts**, **WidgetKit**, **Core Data with CloudKit**, **Swift Testing** |
 | **Engineering practice** | Generated Xcode project, lint in the build, unit tests per package, **Maestro UI tests**, **Xcode Cloud** tests on every push, **fastlane** TestFlight uploads, Conventional Commits, gitflow and a changelog |
 <!-- showcase:glance:end -->
+
+<!-- showcase:stack:start -->
+## 🧰 Tech stack
+
+| Area | Choice |
+|------|--------|
+| Platform | **iOS 26+**, Xcode 26 |
+| Language | **Swift 6** with strict concurrency; main-actor default isolation and approachable concurrency in the app target |
+| UI | **SwiftUI**, Observation (`@Observable`), **Swift Charts** |
+| Persistence | **Core Data**, used as a Codable store, mirrored to the user's private iCloud database with **CloudKit** |
+| Dependency injection | [Factory](https://github.com/hmlongco/Factory), behind a thin in-house wrapper |
+| Modularization | Local **Swift packages**: one per feature plus two shared ones |
+| Project generation | [Tuist](https://tuist.dev) |
+| Lint | [SwiftLint](https://github.com/realm/SwiftLint), run as a pre-build phase, with custom rules |
+| Tests | **Swift Testing** for unit tests, [Maestro](https://maestro.dev) for UI integration tests |
+| Continuous integration | [Xcode Cloud](https://developer.apple.com/xcode-cloud/): every push to `develop` runs the unit tests of all packages |
+| Release automation | [fastlane](https://fastlane.tools): tests, TestFlight uploads and the App Store listing |
+| Localization | String catalogs (`.xcstrings`), English and Italian |
+
+Factory is the only third-party runtime dependency.
+<!-- showcase:stack:end -->
+
+<!-- showcase:architecture:start -->
+## 🧱 Architecture
+
+The app target is a **thin shell**: it owns the `TabView`, the scene delegate for quick actions and the deep-link routing, and wires each tab to a feature package. A **widget extension** reads only the shared core and UI packages. Everything else lives in local Swift packages.
+
+```mermaid
+graph TD
+    App[GrillMate app target]
+    App --> Cookings[CookingsFeature]
+    App --> Barbecue[BarbecueFeature]
+    App --> Recipes[RecipesFeature]
+    App --> Stats[StatsFeature]
+    App --> Settings[SettingsFeature]
+    App --> Onboarding[OnboardingFeature]
+    Widgets[GrillMateWidgets extension]
+
+    Cookings & Barbecue & Recipes & Stats & Settings & Onboarding --> CoreUI["GrillMateCoreUI<br/>design system, components, Router, ViewState"]
+    Cookings & Barbecue & Recipes & Stats & Settings & Onboarding --> Core["GrillMateCore<br/>domain, repositories, Core Data, DI"]
+    Widgets --> CoreUI & Core
+    Core --> Factory[Factory]
+```
+
+- **Features never depend on each other.** Each one depends only on `GrillMateCore` and `GrillMateCoreUI`, so it builds, tests and previews on its own.
+- **`GrillMateCoreUI` doesn't depend on `GrillMateCore`.** Shared components take plain, already formatted values, and each feature maps its domain models to them.
+- **One public entry point per feature**: a `@MainActor` factory enum that returns the feature's navigation stack. Screens, view models and routes stay internal to the package.
+
+### 🔀 Data flow
+
+```mermaid
+flowchart LR
+    View --> ViewModel
+    ViewModel --> Protocol[Repository protocol]
+    Protocol --> Repository
+    Repository --> DataSource[Local data source]
+    DataSource --> CoreData[(Core Data)]
+```
+
+View models are `@Observable` main-actor classes that expose a `ViewState<T>` (idle, loading, loaded, error) and resolve their repositories from the DI container. Only the **repository protocols are public**: data sources and the Core Data stack are internal to `GrillMateCore` and do their work on **background contexts**.
+<!-- showcase:architecture:end -->
 
 <!-- showcase:features:start -->
 ## ✨ Features
@@ -179,67 +240,6 @@ Your logbook on every device.
 - Full-screen **photo viewer** with paging and pinch to zoom
 - **English and Italian**
 <!-- showcase:features:end -->
-
-<!-- showcase:stack:start -->
-## 🧰 Tech stack
-
-| Area | Choice |
-|------|--------|
-| Platform | **iOS 26+**, Xcode 26 |
-| Language | **Swift 6** with strict concurrency; main-actor default isolation and approachable concurrency in the app target |
-| UI | **SwiftUI**, Observation (`@Observable`), **Swift Charts** |
-| Persistence | **Core Data**, used as a Codable store, mirrored to the user's private iCloud database with **CloudKit** |
-| Dependency injection | [Factory](https://github.com/hmlongco/Factory), behind a thin in-house wrapper |
-| Modularization | Local **Swift packages**: one per feature plus two shared ones |
-| Project generation | [Tuist](https://tuist.dev) |
-| Lint | [SwiftLint](https://github.com/realm/SwiftLint), run as a pre-build phase, with custom rules |
-| Tests | **Swift Testing** for unit tests, [Maestro](https://maestro.dev) for UI integration tests |
-| Continuous integration | [Xcode Cloud](https://developer.apple.com/xcode-cloud/): every push to `develop` runs the unit tests of all packages |
-| Release automation | [fastlane](https://fastlane.tools): tests, TestFlight uploads and the App Store listing |
-| Localization | String catalogs (`.xcstrings`), English and Italian |
-
-Factory is the only third-party runtime dependency.
-<!-- showcase:stack:end -->
-
-<!-- showcase:architecture:start -->
-## 🧱 Architecture
-
-The app target is a **thin shell**: it owns the `TabView`, the scene delegate for quick actions and the deep-link routing, and wires each tab to a feature package. A **widget extension** reads only the shared core and UI packages. Everything else lives in local Swift packages.
-
-```mermaid
-graph TD
-    App[GrillMate app target]
-    App --> Cookings[CookingsFeature]
-    App --> Barbecue[BarbecueFeature]
-    App --> Recipes[RecipesFeature]
-    App --> Stats[StatsFeature]
-    App --> Settings[SettingsFeature]
-    App --> Onboarding[OnboardingFeature]
-    Widgets[GrillMateWidgets extension]
-
-    Cookings & Barbecue & Recipes & Stats & Settings & Onboarding --> CoreUI["GrillMateCoreUI<br/>design system, components, Router, ViewState"]
-    Cookings & Barbecue & Recipes & Stats & Settings & Onboarding --> Core["GrillMateCore<br/>domain, repositories, Core Data, DI"]
-    Widgets --> CoreUI & Core
-    Core --> Factory[Factory]
-```
-
-- **Features never depend on each other.** Each one depends only on `GrillMateCore` and `GrillMateCoreUI`, so it builds, tests and previews on its own.
-- **`GrillMateCoreUI` doesn't depend on `GrillMateCore`.** Shared components take plain, already formatted values, and each feature maps its domain models to them.
-- **One public entry point per feature**: a `@MainActor` factory enum that returns the feature's navigation stack. Screens, view models and routes stay internal to the package.
-
-### 🔀 Data flow
-
-```mermaid
-flowchart LR
-    View --> ViewModel
-    ViewModel --> Protocol[Repository protocol]
-    Protocol --> Repository
-    Repository --> DataSource[Local data source]
-    DataSource --> CoreData[(Core Data)]
-```
-
-View models are `@Observable` main-actor classes that expose a `ViewState<T>` (idle, loading, loaded, error) and resolve their repositories from the DI container. Only the **repository protocols are public**: data sources and the Core Data stack are internal to `GrillMateCore` and do their work on **background contexts**.
-<!-- showcase:architecture:end -->
 
 <!-- showcase:highlights:start -->
 ## 💡 Technical highlights
