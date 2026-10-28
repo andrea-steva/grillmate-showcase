@@ -15,7 +15,7 @@
 
 GrillMate is a **native iOS logbook for barbecue**: record every cooking session, keep track of your grills and smokers, save the recipes you want to make again, see how you cook through **stats and charts**, and keep everything in sync across your devices with **iCloud**. It's built with **SwiftUI for iOS 26**, in **light and dark mode**.
 
-The goal is to **use every iOS feature Apple offers** where it fits a barbecue logbook: SwiftUI and Swift Charts, Core Data with CloudKit, **WidgetKit** Home Screen and Lock Screen widgets, Home Screen quick actions and alternate app icons today, and Live Activities, the Dynamic Island, Control Center controls and AlarmKit next.
+The goal is to **use every iOS feature Apple offers** where it fits a barbecue logbook: SwiftUI and Swift Charts, Core Data with CloudKit, **WidgetKit** Home Screen and Lock Screen widgets, Home Screen quick actions, alternate app icons, **local notifications** and **on-device Apple Intelligence** (Foundation Models) today, and Live Activities, the Dynamic Island, Control Center controls and AlarmKit next.
 
 A personal project by **Andrea Stevanato**, designed, built and tested end to end. The app's source code is private: this README shows what the app does and explains how it's built.
 
@@ -37,7 +37,7 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 - [🧱 Architecture](#-architecture)
 - [✨ Features](#-features)
   - [🍖 Cookings](#-cookings) · [🔥 Devices](#-devices) · [📖 Recipes](#-recipes) · [📊 Stats](#-stats)
-  - [🔲 Widgets](#-widgets) · [⚡ Quick actions](#-quick-actions) · [📲 iPhone Duo](#-iphone-duo) · [🔄 iCloud sync](#-icloud-sync) · [🔧 Settings and onboarding](#-settings-and-onboarding)
+  - [🔲 Widgets](#-widgets) · [⚡ Quick actions](#-quick-actions) · [📲 iPhone Duo](#-iphone-duo) · [🔄 iCloud sync](#-icloud-sync) · [🔔 Reminders](#-reminders) · [🔧 Settings and onboarding](#-settings-and-onboarding)
 - [💡 Technical highlights](#-technical-highlights)
 - [✅ Quality](#-quality)
 - [🔭 What's next](#-whats-next)
@@ -48,9 +48,9 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 
 | | |
 |---|---|
-| **What** | A complete iOS app: five tabs, add/edit forms with photos, charts, theming, **iCloud sync**, data export and import, **Home Screen and Lock Screen widgets**, **Home Screen quick actions**, **iPhone Duo** support, onboarding, English and Italian |
+| **What** | A complete iOS app: five tabs, add/edit forms with photos, charts, theming, **iCloud sync**, data export and import, **Home Screen and Lock Screen widgets**, **Home Screen quick actions**, weekly **reminders** with seasonal messages written by **on-device AI**, **iPhone Duo** support, onboarding, English and Italian |
 | **Architecture** | **Modular**: one Swift package per feature plus shared core and UI packages, **MVVM** with repositories and **dependency injection** |
-| **Modern Apple stack** | **Swift 6** strict concurrency, **SwiftUI**, Observation, **Swift Charts**, **WidgetKit**, **Core Data with CloudKit**, **Swift Testing** |
+| **Modern Apple stack** | **Swift 6** strict concurrency, **SwiftUI**, Observation, **Swift Charts**, **WidgetKit**, **Core Data with CloudKit**, **Foundation Models**, **UserNotifications**, **Swift Testing** |
 | **Engineering practice** | Generated Xcode project, lint in the build, unit tests per package, **Maestro UI tests**, **Xcode Cloud** tests on every push, **fastlane** TestFlight uploads, Conventional Commits, gitflow and a changelog |
 <!-- showcase:glance:end -->
 
@@ -63,6 +63,8 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 | Language | **Swift 6** with strict concurrency; main-actor default isolation and approachable concurrency in the app target |
 | UI | **SwiftUI**, Observation (`@Observable`), **Swift Charts** |
 | Persistence | **Core Data**, used as a Codable store, mirrored to the user's private iCloud database with **CloudKit** |
+| On-device AI | **Foundation Models** with guided generation, falling back to hand-written messages where Apple Intelligence isn't available |
+| Notifications | **UserNotifications**, local only: no server, no push |
 | Dependency injection | [Factory](https://github.com/hmlongco/Factory), behind a thin in-house wrapper |
 | Modularization | Local **Swift packages**: one per feature plus two shared ones |
 | Project generation | [Tuist](https://tuist.dev) |
@@ -225,17 +227,33 @@ Your logbook on every device.
 - **Reinstall and your data comes back**: the sync choice is remembered in iCloud, so a fresh install turns sync back on by itself and restores everything
 - **Export** everything, photos included, to a single file, after a confirmation that shows how many items it will contain, and **import** it back to restore your data on any iPhone
 
+### 🔔 Reminders
+A nudge to fire up the grill, once or twice a week.
+
+<p align="center">
+  <img src="assets/screenshots/reminder.png" alt="A GrillMate reminder banner on the Home Screen: Spooky smoke, a Halloween menu idea (light)" width="260">
+  <img src="assets/screenshots/reminder-dark.png" alt="A GrillMate reminder banner on the Home Screen: Spooky smoke, a Halloween menu idea (dark)" width="260">
+</p>
+
+- **Thursday evening** to plan the weekend cook and **Saturday morning** to fire it up today
+- Messages follow the **moment of the year**, with a recipe idea: Easter week and Easter Monday, Ferragosto, Halloween, Christmas, New Year and the four seasons
+- On iPhones with **Apple Intelligence**, the message is **written on the device** from what you cook: your favourite cuts and techniques, your barbecue, how long since your last cook
+- **No nudge around the days you grill**: a reminder within three days of a cook is skipped
+- Asked for **only after you add a cooking**, never at first launch, and turned on or off in Settings
+- Tapping a reminder opens a **new cooking**
+
 ### 🔧 Settings and onboarding
 
 <p align="center">
-  <img src="assets/screenshots/settings.png" alt="Settings with the Data section (light)" width="200">
-  <img src="assets/screenshots/settings-dark.png" alt="Settings with the Data section (dark)" width="200">
+  <img src="assets/screenshots/settings.png" alt="Settings with the Reminders toggle and the Data section (light)" width="200">
+  <img src="assets/screenshots/settings-dark.png" alt="Settings with the Reminders toggle and the Data section (dark)" width="200">
   <img src="assets/screenshots/onboarding.png" alt="Onboarding tour (light)" width="200">
   <img src="assets/screenshots/onboarding-dark.png" alt="Onboarding tour (dark)" width="200">
 </p>
 
 - **Light, dark or system appearance**, **six accent colors** and **ten app icons**, including Pride, Italy and USA (PRO)
-- A first-launch **onboarding tour** that can be replayed
+- A **Reminders** toggle, which points to iOS Settings when notifications are blocked
+- A first-launch **onboarding tour** that can be replayed, ending with a page about the **Home Screen widgets**
 - Privacy policy, terms of use and release notes open on the GrillMate website, in the app's language
 - Full-screen **photo viewer** with paging and pinch to zoom
 - **English and Italian**
@@ -254,22 +272,19 @@ Every quick action is a **deep link** on a custom URL scheme, parsed into a type
 The widget extension **never touches Core Data or CloudKit**: opening the store from a second process would race with the app and with iCloud mirroring. Instead the app writes a small JSON **snapshot** of what the widgets show into a shared **App Group** container, at launch, when it goes to the background, when data changes and when the theme changes, and reloads the timelines **only when the snapshot changed**, since iOS budgets reloads. The timer is drawn by the system, and a second timeline entry resets the monthly stats when a new month starts.
 
 ### 💾 Core Data as a Codable blob store
-Every persisted entity has the same three attributes: an id, a **JSON-encoded payload** of the domain model and an update date. Domain models stay plain `Codable` Swift structs, and adding a persisted type takes one entity plus a small data source on top of generic fetch and upsert helpers. Models that change shape keep **decoding their legacy payloads**, with tests that decode the old JSON. The schema follows **CloudKit's rules** (no uniqueness constraints, every attribute optional), enforced by a test, and another test **pins the model deployed to production CloudKit**, so a model change can't ship without deploying the schema first.
+Every persisted entity has the same three attributes: an id, a **JSON-encoded payload** of the domain model and an update date. Domain models stay plain `Codable` Swift structs, and adding a persisted type takes one entity plus a small data source on top of generic fetch and upsert helpers. Models that change shape keep **decoding their legacy payloads**, with tests that decode the old JSON. The schema follows **CloudKit's rules** (no uniqueness constraints, every attribute optional), enforced by a test, and another test **pins the model deployed to production CloudKit**, so a model change can't ship without deploying the schema first. Photos live in **their own entities, indexed by owner**, so list fetches never decode image data, and are **downsampled with ImageIO** before being stored.
 
 ### 🔄 iCloud sync that switches live
-A single shared Core Data stack can **reload its store** with or without `NSPersistentCloudKitContainer` on the same file, so turning sync on or off applies immediately. Without uniqueness constraints, reads keep only the newest copy of an id, deletes run in a context so they're mirrored, and remote changes, **coalesced to one per second**, tell the open lists to reload. The sync choice is also saved in **iCloud key-value storage**, which survives deleting the app, so a fresh install silently turns sync back on and the data flows back in.
-
-### 📦 A portable export format
-Export writes one **versioned JSON file** with every item and photo. Import decodes and **validates the whole file** before touching the store, rejects files from newer app versions, and replaces the data only after a confirmation that shows what the file contains.
-
-### 📸 Photos out of the hot path
-Cooking and recipe photos live in **their own entities, indexed by owner**, rather than inside the parent payload, so list fetches never decode image data. Photos are **downsampled with ImageIO** before being stored and are deleted together with their owner.
+A single shared Core Data stack can **reload its store** with or without `NSPersistentCloudKitContainer` on the same file, so turning sync on or off applies immediately. Without uniqueness constraints, reads keep only the newest copy of an id, deletes run in a context so they're mirrored, and remote changes, **coalesced to one per second**, tell the open lists to reload. The sync choice is also saved in **iCloud key-value storage**, which survives deleting the app, so a fresh install silently turns sync back on and the data flows back in. Export writes one **versioned JSON file** with every item and photo; import **validates the whole file** before touching the store and rejects files from newer app versions.
 
 ### 🎨 Design tokens and a themable accent
-Colors, fonts and SF Symbols are read through `Design` **tokens**; features never hard-code a symbol name. The accent color is an **environment value** set once at the root, so changing the theme recolors controls, cards and Swift Charts palettes in one place.
+Colors, fonts and SF Symbols are read through `Design` **tokens**; features never hard-code a symbol name. The accent color is an **environment value** set once at the root, so changing the theme recolors controls, cards and Swift Charts palettes in one place. The ten **alternate app icons** are generated from the master artwork, and the icon change goes through a **small protocol over the system API**, so it's unit-tested without UIKit.
 
-### 📱 Alternate app icons
-Ten home screen icons are **generated from the master artwork**, so each variant keeps the exact flame and grill. The picker shows small previews bundled with the Settings feature, because an app icon set can't be loaded as an image, and the icon change goes through a **small protocol over the system API**, so the logic is unit-tested without UIKit. Alternate icons are PRO: free users see them locked, but **the icon in use is never locked**, so nobody loses the icon they already set.
+### 🧠 On-device AI with a safe fallback
+Reminder messages are written by Apple's **on-device model** (Foundation Models) with **guided generation**: the model fills a typed title and body, which are checked against notification length limits. The prompt grounds it in the moment of the year, a hand-written example and the user's own cooks, and **nothing leaves the device**. Where Apple Intelligence isn't available, or a reply is rejected, a **hand-written catalogue** in English and Italian takes over. The model runs only while the app is active, is **cancelled when it goes to the background**, and its messages are kept per notification until the user's data or language changes.
+
+### 🔔 Notifications that respect the user
+The next four weeks are scheduled as **one-off local notifications**, skipping three days around any cook, in the **Gregorian calendar** whatever the region's calendar. A **singleton actor** runs reschedules one at a time, a stop request reaches even a pass still queued, and the background pass gets **extra time from iOS** to finish. Permission is asked **after the user adds a cooking**, the moment a reminder makes sense, not at first launch.
 
 ### 🧩 Shared UI, different data
 Cards, form fields, photo galleries and the stretchy photo header live in `GrillMateCoreUI`. The onboarding, the lists and the stats render **the same components**: the onboarding feeds them sample strings, the lists feed them domain data.
@@ -278,7 +293,7 @@ Cards, form fields, photo galleries and the stretchy photo header live in `Grill
 PRO status and the free-tier limits are read from a **single entitlement repository**, and the limits are configured in one place. Features ask `isPro()` and never know where the answer comes from.
 
 ### 🧪 Demo data and a dev app
-A separate **development app variant** installs next to the release one, so testing never touches the real install. Two extra schemes launch the app on an **in-memory store** filled with realistic data (barbecues, recipes and a year of cookings dated relative to today), one as a free user and one as PRO. They're used for screenshots, demos, **UI tests** and manual testing, **never touch the real store**, and are compiled only in Debug.
+A separate **development app variant** installs next to the release one, so testing never touches the real install. Two extra schemes launch the app on an **in-memory store** filled with realistic data (barbecues, recipes and a year of cookings dated relative to today), one as a free user and one as PRO. They're used for screenshots, demos, **UI tests** and manual testing, **never touch the real store**, and are compiled only in Debug. The development app also adds a **Debug overlay**, compiled only into it, that sends a test reminder on demand, written by the model or taken from the catalogue.
 
 ### 🌍 Localized per package
 Each package ships its **own string catalog** in English and Italian. A **custom SwiftLint rule** fails the build when a view in a package uses a bare string literal, which would be looked up in the app's catalog and never translated.
@@ -287,7 +302,7 @@ Each package ships its **own string catalog** in English and Italian. A **custom
 <!-- showcase:quality:start -->
 ## ✅ Quality
 
-- **Tests**: more than **100 Swift Testing tests** across the app, core, UI and feature packages, including quick-action building, the widget snapshot, an export and import round trip, restoring iCloud sync after a reinstall, a check that the Core Data model stays CloudKit-compatible, a pin of the production CloudKit schema and decoding tests for legacy payloads.
+- **Tests**: more than **200 Swift Testing tests** across the app, core, UI and feature packages, including the reminder schedule across daylight saving and region calendars, overlapping reschedules, quick-action building, the widget snapshot, an export and import round trip, restoring iCloud sync after a reinstall, a check that the Core Data model stays CloudKit-compatible, a pin of the production CloudKit schema and decoding tests for legacy payloads.
 - **UI tests**: black-box **Maestro** flows drive the real app on a simulator, starting from a clean install on the demo data, so every run is deterministic. They select views by **accessibility identifier**, defined in one place in the shared UI package, never by text, so they pass in English and Italian. One script builds the app, installs it and runs the flows with a JUnit report. See [UI tests with Maestro](#-ui-tests-with-maestro).
 - **Lint**: **SwiftLint runs before every build**, with rules such as no force unwrapping, implicit returns and closure length limits, plus custom project rules.
 - **Generated project**: the Xcode project and workspace are generated from a single **Tuist** manifest.
@@ -299,7 +314,7 @@ Each package ships its **own string catalog** in English and Italian. A **custom
 The first suite covers the **onboarding**: finishing it page by page, skipping it, swiping between pages, and checking that it isn't shown again on the next launch. Below, the "finish" flow runs on the iPhone 17 simulator: the steps on the left, the app on the right.
 
 <p align="center">
-  <img src="assets/screenshots/onboarding-ui-test.gif" alt="Maestro running the onboarding flow: each step turns green as the app moves through the five onboarding pages and lands on the Cookings tab" width="720">
+  <img src="assets/screenshots/onboarding-ui-test.gif" alt="Maestro running the onboarding flow: each step turns green as the app moves through the six onboarding pages and lands on the Cookings tab" width="720">
 </p>
 
 An excerpt of that flow:
@@ -311,7 +326,7 @@ An excerpt of that flow:
     id: onboarding.primary                     # "Continue"
 - assertVisible:
     id: onboarding.page.cookings
-# … devices, recipes, stats
+# … devices, recipes, stats, widgets
 - assertVisible:
     id: onboarding.skip
     enabled: false                             # "Skip" can't be tapped on the last page
@@ -331,7 +346,6 @@ An excerpt of that flow:
 - Control Center controls
 - Cook alarms
 - AI-assisted cooking features
-- Engagement notifications
 - Crash reporting and analytics
 - Automated App Store screenshots and CI releases
 <!-- showcase:next:end -->
