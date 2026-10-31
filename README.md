@@ -37,7 +37,7 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 - [🧱 Architecture](#-architecture)
 - [✨ Features](#-features)
   - [🍖 Cookings](#-cookings) · [🔥 Devices](#-devices) · [📖 Recipes](#-recipes) · [📊 Stats](#-stats)
-  - [🔲 Widgets](#-widgets) · [⚡ Quick actions](#-quick-actions) · [📲 iPhone Duo](#-iphone-duo) · [🔄 iCloud sync](#-icloud-sync) · [🔔 Reminders](#-reminders) · [🔧 Settings and onboarding](#-settings-and-onboarding)
+  - [🔲 Widgets](#-widgets) · [⚡ Quick actions](#-quick-actions) · [📲 iPhone Duo](#-iphone-duo) · [🔄 iCloud sync](#-icloud-sync) · [🔔 Reminders](#-reminders) · [📤 Share your cooks](#-share-your-cooks) · [🔧 Settings and onboarding](#-settings-and-onboarding)
 - [💡 Technical highlights](#-technical-highlights)
 - [✅ Quality](#-quality)
 - [🔭 What's next](#-whats-next)
@@ -238,9 +238,19 @@ A nudge to fire up the grill, once or twice a week.
 - **Thursday evening** to plan the weekend cook and **Saturday morning** to fire it up today
 - Messages follow the **moment of the year**, with a recipe idea: Easter week and Easter Monday, Ferragosto, Halloween, Christmas, New Year and the four seasons
 - On iPhones with **Apple Intelligence**, the message is **written on the device** from what you cook: your favourite cuts and techniques, your barbecue, how long since your last cook
-- **No nudge around the days you grill**: a reminder within three days of a cook is skipped
+- **Reminders for a planned cook**: the evening before (18:00) and the morning of the day (10:00), opening that cooking
+- **Never pushy**: the weekly nudges are replaced only by a planned cook's reminders, and logged cooks skip nothing
+- Messages are written in the app's language, and fall back to a hand-written one if the model slips
 - Asked for **only after you add a cooking**, never at first launch, and turned on or off in Settings
 - Tapping a reminder opens a **new cooking**
+
+### 📤 Share your cooks
+Turn a cook into a card for your Stories or feed.
+
+- A **Share** button on every saved cooking opens a **live preview** of the card
+- **Story 9:16** or **Feed 4:5** ratio, with **five colour templates** taken from the app icons (Classic, Ember, Ocean, Midnight, Kamado)
+- Rendered in full resolution (1080 px wide) and shared through the **system share sheet**: WhatsApp, Messages, Instagram or Save Image
+- Free for everyone, with a small GrillMate watermark
 
 ### 🔧 Settings and onboarding
 
@@ -253,8 +263,8 @@ A nudge to fire up the grill, once or twice a week.
 
 - **Light, dark or system appearance**, **six accent colors** and **ten app icons**, including Pride, Italy and USA (PRO)
 - A **Reminders** toggle, which points to iOS Settings when notifications are blocked
-- A first-launch **onboarding tour** that can be replayed, ending with a page about the **Home Screen widgets**
-- Privacy policy, terms of use and release notes open on the GrillMate website, in the app's language
+- A first-launch **onboarding tour** that can be replayed, now **eight pages**, including the Home Screen **widgets**, the weekly **reminders** and **sharing a cook**
+- Privacy policy, terms of use and release notes open **inside the app**, in a Safari sheet, in the app's language
 - Full-screen **photo viewer** with paging and pinch to zoom
 - **English and Italian**
 <!-- showcase:features:end -->
