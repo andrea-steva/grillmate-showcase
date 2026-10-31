@@ -173,11 +173,11 @@ See how you cook, with **Swift Charts**.
 </p>
 
 - This month's cooks, **total, average and longest cooking time**, and a chart of the proteins cooked
-- **Extended stats (PRO)**: other periods, time per barbecue, techniques, barbecue types, cooks per month, core temperature accuracy and busiest day
+- **Extended stats**: other periods, time per barbecue, techniques, barbecue types, cooks per month, core temperature accuracy and busiest day
 - Charts follow the **accent color** chosen in Settings (last two: the Ocean theme)
 
 ### 🔲 Widgets
-Your cook at a glance, on the **Home Screen** and the **Lock Screen** (free).
+Your cook at a glance, on the **Home Screen** and the **Lock Screen**.
 
 <p align="center">
   <img src="assets/screenshots/widget-now-cooking.png" alt="Now cooking widget with a live elapsed timer (light)" width="180">
@@ -221,7 +221,7 @@ GrillMate runs on **both displays** of the foldable iPhone Duo.
 ### 🔄 iCloud sync
 Your logbook on every device.
 
-- Barbecues, cookings, recipes and **photos** sync across your iPhones through your **private iCloud database** (PRO)
+- Barbecues, cookings, recipes and **photos** sync across your iPhones through your **private iCloud database**
 - One toggle in Settings turns sync **on or off immediately**, without restarting the app
 - Open lists **refresh by themselves** when changes arrive from another device
 - **Reinstall and your data comes back**: the sync choice is remembered in iCloud, so a fresh install turns sync back on by itself and restores everything
@@ -247,10 +247,15 @@ A nudge to fire up the grill, once or twice a week.
 ### 📤 Share your cooks
 Turn a cook into a card for your Stories or feed.
 
+<p align="center">
+  <img src="assets/screenshots/share-card.png" alt="The Share card screen with a Story 9:16 preview and five color templates (light)" width="260">
+  <img src="assets/screenshots/share-card-dark.png" alt="The Share card screen with a Story 9:16 preview and five color templates (dark)" width="260">
+</p>
+
 - A **Share** button on every saved cooking opens a **live preview** of the card
 - **Story 9:16** or **Feed 4:5** ratio, with **five colour templates** taken from the app icons (Classic, Ember, Ocean, Midnight, Kamado)
 - Rendered in full resolution (1080 px wide) and shared through the **system share sheet**: WhatsApp, Messages, Instagram or Save Image
-- Free for everyone, with a small GrillMate watermark
+- A small GrillMate watermark on the card
 
 ### 🔧 Settings and onboarding
 
@@ -261,7 +266,7 @@ Turn a cook into a card for your Stories or feed.
   <img src="assets/screenshots/onboarding-dark.png" alt="Onboarding tour (dark)" width="200">
 </p>
 
-- **Light, dark or system appearance**, **six accent colors** and **ten app icons**, including Pride, Italy and USA (PRO)
+- **Light, dark or system appearance**, **six accent colors** and **ten app icons**, including Pride, Italy and USA
 - A **Reminders** toggle, which points to iOS Settings when notifications are blocked
 - A first-launch **onboarding tour** that can be replayed, now **eight pages**, including the Home Screen **widgets**, the weekly **reminders** and **sharing a cook**
 - Privacy policy, terms of use and release notes open **inside the app**, in a Safari sheet, in the app's language
@@ -299,11 +304,8 @@ The next four weeks are scheduled as **one-off local notifications**, skipping t
 ### 🧩 Shared UI, different data
 Cards, form fields, photo galleries and the stretchy photo header live in `GrillMateCoreUI`. The onboarding, the lists and the stats render **the same components**: the onboarding feeds them sample strings, the lists feed them domain data.
 
-### 💎 Free and PRO behind one protocol
-PRO status and the free-tier limits are read from a **single entitlement repository**, and the limits are configured in one place. Features ask `isPro()` and never know where the answer comes from.
-
 ### 🧪 Demo data and a dev app
-A separate **development app variant** installs next to the release one, so testing never touches the real install. Two extra schemes launch the app on an **in-memory store** filled with realistic data (barbecues, recipes and a year of cookings dated relative to today), one as a free user and one as PRO. They're used for screenshots, demos, **UI tests** and manual testing, **never touch the real store**, and are compiled only in Debug. The development app also adds a **Debug overlay**, compiled only into it, that sends a test reminder on demand, written by the model or taken from the catalogue.
+A separate **development app variant** installs next to the release one, so testing never touches the real install. Two extra schemes launch the app on an **in-memory store** filled with realistic data (barbecues, recipes and a year of cookings dated relative to today). They're used for screenshots, demos, **UI tests** and manual testing, **never touch the real store**, and are compiled only in Debug. The development app also adds a **Debug overlay**, compiled only into it, that sends a test reminder on demand, written by the model or taken from the catalogue.
 
 ### 🌍 Localized per package
 Each package ships its **own string catalog** in English and Italian. A **custom SwiftLint rule** fails the build when a view in a package uses a bare string literal, which would be looked up in the app's catalog and never translated.
@@ -350,8 +352,6 @@ An excerpt of that flow:
 <!-- showcase:next:start -->
 ## 🔭 What's next
 
-- PRO version with in-app purchase
-- PRO widgets
 - Live Activity and Dynamic Island for the cook in progress
 - Control Center controls
 - Cook alarms
