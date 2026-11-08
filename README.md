@@ -37,7 +37,7 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 - [🧱 Architecture](#-architecture)
 - [✨ Features](#-features)
   - [🍖 Cookings](#-cookings) · [🔥 Devices](#-devices) · [📖 Recipes](#-recipes) · [📊 Stats](#-stats)
-  - [🔲 Widgets](#-widgets) · [⚡ Quick actions](#-quick-actions) · [📲 iPhone Duo](#-iphone-duo) · [🔄 iCloud sync](#-icloud-sync) · [🔔 Reminders](#-reminders) · [📤 Share your cooks](#-share-your-cooks) · [🔧 Settings and onboarding](#-settings-and-onboarding)
+  - [🔲 Widgets](#-widgets) · [⚡ Quick actions](#-quick-actions) · [📱 iPad](#-ipad) · [📲 iPhone Duo](#-iphone-duo) · [🔄 iCloud sync](#-icloud-sync) · [🔔 Reminders](#-reminders) · [📤 Share your cooks](#-share-your-cooks) · [🔧 Settings and onboarding](#-settings-and-onboarding)
 - [💡 Technical highlights](#-technical-highlights)
 - [✅ Quality](#-quality)
 - [🔭 What's next](#-whats-next)
@@ -202,6 +202,26 @@ Long-press the app icon to jump straight into the app.
 - **New cooking**, **New recipe**, **Stats** and **Add device**, one tap from the Home Screen
 - The **cooking in progress**, or the next planned one, comes first and opens directly, so you can update a cook while it's on the grill
 - The menu is **dynamic**: it's refreshed every time you leave the app, so it always shows your current cook, in English or Italian
+
+### 📱 iPad
+GrillMate runs on **iPad** in all four orientations, with the same features as on iPhone.
+
+<p align="center">
+  <img src="assets/screenshots/ipad-cookings.png" alt="Cookings on iPad, with the tabs in the top bar (light)" width="260">
+  <img src="assets/screenshots/ipad-cookings-dark.png" alt="Cookings on iPad, with the tabs in the top bar (dark)" width="260">
+</p>
+<p align="center">
+  <img src="assets/screenshots/ipad-recipes.png" alt="Recipes on iPad (light)" width="260">
+  <img src="assets/screenshots/ipad-recipes-dark.png" alt="Recipes on iPad (dark)" width="260">
+</p>
+<p align="center">
+  <img src="assets/screenshots/ipad-stats.png" alt="Stats on iPad, with the summary and charts in a wider grid (light)" width="260">
+  <img src="assets/screenshots/ipad-stats-dark.png" alt="Stats on iPad, with the summary and charts in a wider grid (dark)" width="260">
+</p>
+
+- The **tabs move to the top bar**, and the content stays in a **readable column** instead of stretching across the screen
+- **Adaptive grids** for the Stats summary and the theme and app icon pickers
+- The onboarding tour opens as a **centered sheet**, and delete confirmations are **alerts** that point at the right card
 
 ### 📲 iPhone Duo
 GrillMate runs on **both displays** of the foldable iPhone Duo.
