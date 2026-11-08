@@ -13,9 +13,9 @@
   </a>
 </p>
 
-GrillMate is a **native iOS logbook for barbecue**: record every cooking session, keep track of your grills and smokers, save the recipes you want to make again, see how you cook through **stats and charts**, and keep everything in sync across your devices with **iCloud**. It's built with **SwiftUI for iOS 26**, in **light and dark mode**.
+GrillMate is a **native iOS logbook for barbecue**: record every cooking session, keep track of your grills and smokers, save the recipes you want to make again, see how you cook through **stats and charts**, and keep everything in sync across your devices with **iCloud**. It's built with **SwiftUI for iOS 26**, runs on **iPhone and iPad** and comes in **light and dark mode**.
 
-The goal is to **use every iOS feature Apple offers** where it fits a barbecue logbook: SwiftUI and Swift Charts, Core Data with CloudKit, **WidgetKit** Home Screen and Lock Screen widgets, Home Screen quick actions, alternate app icons, **local notifications** and **on-device Apple Intelligence** (Foundation Models) today, and Live Activities, the Dynamic Island, Control Center controls and AlarmKit next.
+The goal is to **use every iOS feature Apple offers** where it fits a barbecue logbook: SwiftUI and Swift Charts, Core Data with CloudKit, **WidgetKit** Home Screen and Lock Screen widgets, **Control Center controls**, Home Screen quick actions, alternate app icons, **local notifications** and **on-device Apple Intelligence** (Foundation Models) today, and Live Activities, the Dynamic Island and AlarmKit next.
 
 A personal project by **Andrea Stevanato**, designed, built and tested end to end. The app's source code is private: this README shows what the app does and explains how it's built.
 
@@ -48,7 +48,7 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 
 | | |
 |---|---|
-| **What** | A complete iOS app: five tabs, add/edit forms with photos, charts, theming, **iCloud sync**, data export and import, **Home Screen and Lock Screen widgets**, **Home Screen quick actions**, weekly **reminders** with seasonal messages written by **on-device AI**, **iPhone Duo** support, onboarding, English and Italian |
+| **What** | A complete iOS app: five tabs, add/edit forms with photos, charts, theming, **iCloud sync**, data export and import, **iPad** layouts, **Home Screen and Lock Screen widgets**, **Control Center controls**, **Home Screen quick actions**, weekly **reminders** with seasonal messages written by **on-device AI**, **iPhone Duo** support, onboarding, English and Italian |
 | **Architecture** | **Modular**: one Swift package per feature plus shared core and UI packages, **MVVM** with repositories and **dependency injection** |
 | **Modern Apple stack** | **Swift 6** strict concurrency, **SwiftUI**, Observation, **Swift Charts**, **WidgetKit**, **Core Data with CloudKit**, **Foundation Models**, **UserNotifications**, **Swift Testing** |
 | **Engineering practice** | Generated Xcode project, lint in the build, unit tests per package, **Maestro UI tests**, **Xcode Cloud** tests on every push, **fastlane** TestFlight uploads, Conventional Commits, gitflow and a changelog |
@@ -59,7 +59,7 @@ Website: [grillmate.pages.dev](https://grillmate.pages.dev/)
 
 | Area | Choice |
 |------|--------|
-| Platform | **iOS 26+**, Xcode 26 |
+| Platform | **iOS 26+** on **iPhone and iPad**, Xcode 26 |
 | Language | **Swift 6** with strict concurrency; main-actor default isolation and approachable concurrency in the app target |
 | UI | **SwiftUI**, Observation (`@Observable`), **Swift Charts** |
 | Persistence | **Core Data**, used as a Codable store, mirrored to the user's private iCloud database with **CloudKit** |
@@ -188,7 +188,8 @@ Your cook at a glance, on the **Home Screen** and the **Lock Screen**.
 
 - **Now cooking** (small, and rectangular on the Lock Screen): the cook in progress with a **live elapsed timer** and its target temperature, otherwise the next planned cook, otherwise a "Fire it up" shortcut
 - **Grill stats** (small, and circular on the Lock Screen): this month's **cookings and grill time**
-- Both use the app's **accent color**, **open the right screen** when tapped, support the tinted and clear Home Screen styles, and come in English and Italian
+- **Controls** for **Control Center**, the Lock Screen and the **Action button**: **New cooking** and **New recipe** open the add form straight away
+- The widgets use the app's **accent color**, **open the right screen** when tapped, support the tinted and clear Home Screen styles, and come in English and Italian
 
 ### ⚡ Quick actions
 Long-press the app icon to jump straight into the app.
@@ -314,7 +315,7 @@ Each package ships its **own string catalog** in English and Italian. A **custom
 <!-- showcase:quality:start -->
 ## ✅ Quality
 
-- **Tests**: more than **200 Swift Testing tests** across the app, core, UI and feature packages, including the reminder schedule across daylight saving and region calendars, overlapping reschedules, quick-action building, the widget snapshot, an export and import round trip, restoring iCloud sync after a reinstall, a check that the Core Data model stays CloudKit-compatible, a pin of the production CloudKit schema and decoding tests for legacy payloads.
+- **Tests**: more than **400 Swift Testing tests** across the app, core, UI and feature packages, including the reminder schedule across daylight saving and region calendars, overlapping reschedules, quick-action building, the widget snapshot, an export and import round trip, restoring iCloud sync after a reinstall, a check that the Core Data model stays CloudKit-compatible, a pin of the production CloudKit schema and decoding tests for legacy payloads.
 - **UI tests**: black-box **Maestro** flows drive the real app on a simulator, starting from a clean install on the demo data, so every run is deterministic. They select views by **accessibility identifier**, defined in one place in the shared UI package, never by text, so they pass in English and Italian. One script builds the app, installs it and runs the flows with a JUnit report. See [UI tests with Maestro](#-ui-tests-with-maestro).
 - **Lint**: **SwiftLint runs before every build**, with rules such as no force unwrapping, implicit returns and closure length limits, plus custom project rules.
 - **Generated project**: the Xcode project and workspace are generated from a single **Tuist** manifest.
@@ -353,7 +354,6 @@ An excerpt of that flow:
 ## 🔭 What's next
 
 - Live Activity and Dynamic Island for the cook in progress
-- Control Center controls
 - Cook alarms
 - AI-assisted cooking features
 - Crash reporting and analytics
