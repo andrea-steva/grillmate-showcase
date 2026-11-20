@@ -134,8 +134,10 @@ Log every session and follow it from **planned** to **completed**.
 
 - Title, barbecue, **status** (planned, in progress, completed), proteins and technique
 - Start and end time, **target, reached and ambient temperatures**, notes
-- Up to **3 photos** per cook, from the camera or the photo library
-- A list **grouped by month**, with photo banners and **swipe to complete**
+- Up to **3 photos** per cook, from the camera or the photo library, with the **cover photo** of your choice
+- Rate a cook from **1 to 5 stars**, in any status
+- A list **grouped by month**, with photo banners, a status badge, **swipe to complete** and a **filter by protein**
+- Turning on the end date marks a cook as completed automatically
 
 ### 🔥 Devices
 All your grills, smokers, kamados and planchas in one place.
@@ -159,8 +161,10 @@ Save the recipes you want to make again.
 </p>
 
 - Name, summary, technique, **prep and cook time**, servings and **target core temperature**
-- **Ingredients** with quantity and unit, **ordered steps**, notes and up to 3 photos
+- **Ingredients** with quantity and unit, **ordered steps**, notes and up to 3 photos, with the **cover photo** of your choice
 - A swipeable full-width **photo gallery** in the detail
+- **Search** the list by name and summary, newest recipes first
+- **Share** a recipe as text or as an **A4 PDF** with the cover photo, ingredients and numbered steps, through the system share sheet
 
 ### 📊 Stats
 See how you cook, with **Swift Charts**.
@@ -335,12 +339,12 @@ Each package ships its **own string catalog** in English and Italian. A **custom
 <!-- showcase:quality:start -->
 ## ✅ Quality
 
-- **Tests**: more than **400 Swift Testing tests** across the app, core, UI and feature packages, including the reminder schedule across daylight saving and region calendars, overlapping reschedules, quick-action building, the widget snapshot, an export and import round trip, restoring iCloud sync after a reinstall, a check that the Core Data model stays CloudKit-compatible, a pin of the production CloudKit schema and decoding tests for legacy payloads.
+- **Tests**: nearly **500 Swift Testing tests** across the app, core, UI and feature packages, including the reminder schedule across daylight saving and region calendars, overlapping reschedules, quick-action building, the widget snapshot, an export and import round trip, restoring iCloud sync after a reinstall, a check that the Core Data model stays CloudKit-compatible, a pin of the production CloudKit schema and decoding tests for legacy payloads.
 - **UI tests**: black-box **Maestro** flows drive the real app on a simulator, starting from a clean install on the demo data, so every run is deterministic. They select views by **accessibility identifier**, defined in one place in the shared UI package, never by text, so they pass in English and Italian. One script builds the app, installs it and runs the flows with a JUnit report. See [UI tests with Maestro](#-ui-tests-with-maestro).
 - **Lint**: **SwiftLint runs before every build**, with rules such as no force unwrapping, implicit returns and closure length limits, plus custom project rules.
 - **Generated project**: the Xcode project and workspace are generated from a single **Tuist** manifest.
 - **Continuous integration**: **Xcode Cloud** builds and tests every push to `develop` with one test plan that covers the unit tests of the app, the shared packages and every feature, so a merged pull request is checked without a local run.
-- **Releases**: **fastlane** lanes run the tests, archive and upload builds to **TestFlight**, and push the App Store listing after checking every field against Apple's limits. The app ships a **privacy manifest**: no tracking, no data collected.
+- **Releases**: **fastlane** lanes run the tests, archive and upload builds to **TestFlight**, push the App Store listing after checking every field against Apple's limits, and send a build to review. The app ships a **privacy manifest**: no tracking, no data collected.
 - **Process**: **Conventional Commits**, **gitflow** with pull requests into `develop`, and a changelog following Keep a Changelog.
 
 ### 🎬 UI tests with Maestro
